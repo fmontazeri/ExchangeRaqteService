@@ -29,8 +29,10 @@ public class AddCurrencyTests
         var actual = new Currency("USD", today, tomorrow, 46000);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
-            { actual.Add(tomorrow, afterTomorrow, 54000); });
-        
+        {
+            actual.Add(tomorrow, afterTomorrow, 54000);
+        });
+
         var expectedMessage = string.Format(OverlapTimePeriodException.ErrorMessage, tomorrow);
         exception.Message.Should().Be(expectedMessage);
     }

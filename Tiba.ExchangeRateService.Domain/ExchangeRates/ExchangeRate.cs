@@ -2,7 +2,14 @@ using Tiba.ExchangeRateService.Domain.ExchangeRates.Exceptions;
 
 namespace Tiba.ExchangeRateService.Domain.ExchangeRates;
 
-public class ExchangeRate
+public interface IExchangeRate
+{
+    DateTime FromDate { get; }
+    DateTime ToDate { get; }
+    decimal Price { get; }
+}
+
+public class ExchangeRate : IExchangeRate
 {
     //Make ExchangeRate internal
     public ExchangeRate(DateTime fromDate, DateTime toDate, decimal price, DateTime? startDate = null)
