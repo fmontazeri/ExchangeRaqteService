@@ -15,9 +15,9 @@ public class AddExchangeRateTests
         var nextDay = today.AddDays(theDayAfterTomorrow);
         var actual = new ExchangeRate(today, nextDay, price);
 
-        actual.FromDateDate.Should().Be(today);
-        actual.ToDateDate.Should().Be(nextDay);
-        actual.FromDateDate.Should().BeBefore(actual.ToDateDate);
+        actual.FromDate.Should().Be(today);
+        actual.ToDate.Should().Be(nextDay);
+        actual.FromDate.Should().BeBefore(actual.ToDate);
         actual.Price.Should().BeGreaterThan(0);
         actual.Price.Should().Be(price);
     }
@@ -36,17 +36,37 @@ public class AddExchangeRateTests
         exception.Message.Should().BeEquivalentTo(PriceIsNotValidException.ErrorMessage);
     }
 
+
+    [Fact]
+    public void ExchangeRate_Should_Be_Constructed_When_The_FromDate_Is_Before_Than_The_ToDate()
+    {
+        var today = DateTime.Today;
+        var tomorrow = today.AddDays(1);
+
+        var actual = new ExchangeRate(today, tomorrow, 120000);
+
+        actual.FromDate.Should().Be(today);
+        actual.ToDate.Should().Be(tomorrow);
+        actual.FromDate.Should().BeBefore(actual.ToDate);
+    }
+
     [Fact]
     public void ExchangeRate_Should_Not_Be_Constructed_When_FromDate_Is_After_The_ToDate()
     {
         var today = DateTime.Today;
-        var previousDay = today.AddDays(-1);
+        var nextDay = today.AddDays(2);
 
         var exception = Assert.Throws<FromDateIsNotValidException>(() =>
         {
-            var actual = new ExchangeRate(previousDay, today, 120000);
+            var actual = new ExchangeRate(nextDay, today, 120000);
         });
 
         exception.Message.Should().Be(FromDateIsNotValidException.ErrorMessage);
+    }
+
+    [Fact]
+    public void ExchangeRate_Should_Be_Update_Correctly()
+    {
+        //
     }
 }

@@ -4,21 +4,24 @@ namespace Tiba.ExchangeRateService.Domain.ExchangeRates;
 
 public class ExchangeRate
 {
-    public ExchangeRate(DateTime fromDate, DateTime toDate, decimal price)
+    //Make ExchangeRate internal
+    public ExchangeRate(DateTime fromDate, DateTime toDate, decimal price , DateTime? startDate = null)
     {
         if (price <= 0)
             throw new PriceIsNotValidException();
 
-        if (fromDate < toDate)
+        if (startDate.HasValue && ( fromDate <= startDate || toDate <= startDate))
+            throw new OverlapTimePeriodException(startDate.Value);
+        if ( fromDate > toDate)
             throw new FromDateIsNotValidException();
         
-        this.FromDateDate = fromDate;
-        this.ToDateDate = toDate;
+        this.FromDate = fromDate;
+        this.ToDate = toDate;
         this.Price = price;
     }
 
 
-    public DateTime FromDateDate { get; private set; }
-    public DateTime ToDateDate { get; private set; }
+    public DateTime FromDate { get; private set; }
+    public DateTime ToDate { get; private set; }
     public decimal Price { get; private set; }
 }
