@@ -28,7 +28,7 @@ public class AddExchangeRateTests
     [InlineData(0)]
     [InlineData(-100)]
     [InlineData(-120000)]
-    public void ExchangeRate_Should_Not_Be_Constructed_When_Price_Is_Not_Valid(decimal price)
+    public void ExchangeRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal price)
     {
         var exception = Assert.Throws<PriceIsNotValidException>(() =>
         {
@@ -42,7 +42,7 @@ public class AddExchangeRateTests
 
 
     [Fact]
-    public void ExchangeRate_Should_Be_Constructed_When_The_FromDate_Is_Before_Than_The_ToDate()
+    public void ExchangeRate_Should_Be_Added_When_The_FromDate_Is_Before_Than_The_ToDate()
     {
         var today = DateTime.Today;
         var tomorrow = today.AddDays(1);
