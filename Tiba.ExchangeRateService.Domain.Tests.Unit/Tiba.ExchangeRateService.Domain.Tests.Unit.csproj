@@ -23,4 +23,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Tiba.ExchangeRateService.Domain\Tiba.ExchangeRateService.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
