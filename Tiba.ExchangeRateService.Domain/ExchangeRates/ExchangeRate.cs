@@ -5,16 +5,17 @@ namespace Tiba.ExchangeRateService.Domain.ExchangeRates;
 public class ExchangeRate
 {
     //Make ExchangeRate internal
-    public ExchangeRate(DateTime fromDate, DateTime toDate, decimal price , DateTime? startDate = null)
+    public ExchangeRate(DateTime fromDate, DateTime toDate, decimal price, DateTime? startDate = null)
     {
         if (price <= 0)
             throw new PriceIsNotValidException();
 
-        if (startDate.HasValue && ( fromDate <= startDate || toDate <= startDate))
+        if (startDate.HasValue && (fromDate <= startDate || toDate <= startDate))
             throw new OverlapTimePeriodException(startDate.Value);
-        if ( fromDate > toDate)
+
+        if (fromDate > toDate)
             throw new FromDateIsNotValidException();
-        
+
         this.FromDate = fromDate;
         this.ToDate = toDate;
         this.Price = price;
