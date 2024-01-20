@@ -16,7 +16,10 @@ public class AddCurrencyTests
         var actual = new Currency("USD", today, tomorrow, 1200);
 
         actual.Name.Should().BeEquivalentTo("USD");
-        var expectedExchangeRate = new ExchangeRate(today, tomorrow, 1200);
+        var expectedExchangeRate = 
+            new ExchangeRateBuilder()
+                .WithFromDate(today).WithToDate(tomorrow).WithPrice(1200)
+                .Build();
         actual.ExchangeRates.First().Should().BeEquivalentTo(expectedExchangeRate);
     }
 

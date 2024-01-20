@@ -13,9 +13,9 @@ public class Currency
     public string Name { get; set; }
 
     private List<ExchangeRate> _exchangeRates = new ();
-    public IReadOnlyCollection<ExchangeRate> ExchangeRates => _exchangeRates;
+    public IReadOnlyCollection<IExchangeRate> ExchangeRates => _exchangeRates;
 
-    public ExchangeRate? LastExchangeRate { get; private set; }
+    public IExchangeRate? LastExchangeRate { get; private set; }
 
     public void Add(DateTime fromDate, DateTime toDate, decimal price)
     {

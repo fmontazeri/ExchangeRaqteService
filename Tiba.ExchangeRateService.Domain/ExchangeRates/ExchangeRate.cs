@@ -4,14 +4,13 @@ namespace Tiba.ExchangeRateService.Domain.ExchangeRates;
 
 public interface IExchangeRate
 {
-    DateTime FromDate { get; }
-    DateTime ToDate { get; }
-    decimal Price { get; }
+   public DateTime FromDate { get; }
+   public DateTime ToDate { get; }
+  public  decimal Price { get; }
 }
 
-public class ExchangeRate : IExchangeRate
+internal class ExchangeRate : IExchangeRate
 {
-    //Make ExchangeRate internal
     public ExchangeRate(DateTime fromDate, DateTime toDate, decimal price, DateTime? startDate = null)
     {
         if (price <= 0)
