@@ -18,7 +18,7 @@ public class AddCurrencyTests
     {
         var options = _builder.Build();
 
-        var actual = new Currency(options);
+        var actual = NewCurrency(options);
 
         actual.Name.Should().BeEquivalentTo(_builder.Currency);
         var expectedExchangeRate = _builder.Build();
@@ -26,6 +26,10 @@ public class AddCurrencyTests
         actual.CurrencyRates.Should().AllSatisfy(ex => ex.Should().BeEquivalentTo(expectedExchangeRate));
     }
 
+    private Currency NewCurrency(ICurrencyRateOptions options)
+    {
+        return new Currency(options);
+    }
 
     [Theory]
     [InlineData("")]
@@ -36,7 +40,7 @@ public class AddCurrencyTests
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
             var options = _builder.WithCurrency(currencyName).Build();
-            var actual = new Currency(options);
+            var actual = NewCurrency(options);
         });
 
         exception.Message.Should().BeEquivalentTo(CurrencyIsNotDefinedException.ErrorMessage);
@@ -49,7 +53,7 @@ public class AddCurrencyTests
         var actual = Assert.Throws<TheTimePeriodIsEmptyOrDefaultException>(() =>
         {
             var options = _builder.WithFromDate(defaultDate).WithToDate(defaultDate).Build();
-            var actual = new Currency(options);
+            var actual = NewCurrency(options);
         });
 
         actual.Message.Should().BeEquivalentTo(TheTimePeriodIsEmptyOrDefaultException.ErrorMessage);
