@@ -21,9 +21,8 @@ public class AddCurrencyTests
         var actual = NewCurrency(options);
 
         actual.Name.Should().BeEquivalentTo(_builder.Currency);
-        var expectedExchangeRate = _builder.Build();
-        actual.LastCurrencyRate.Should().BeEquivalentTo(expectedExchangeRate);
-        actual.CurrencyRates.Should().AllSatisfy(ex => ex.Should().BeEquivalentTo(expectedExchangeRate));
+        actual.LastCurrencyRate.Should().BeEquivalentTo(options);
+        actual.CurrencyRates.Should().AllSatisfy(ex => ex.Should().BeEquivalentTo(options));
     }
 
     private Currency NewCurrency(ICurrencyRateOptions options)
