@@ -26,7 +26,9 @@ internal class ExchangeRate : IExchangeRate
             throw new FromDateIsNotValidException();
     }
 
+    public string Currency { get; private set; }
     public DateTime FromDate { get; private set; }
     public DateTime ToDate { get; private set; }
     public decimal Price { get; private set; }
+    
 }

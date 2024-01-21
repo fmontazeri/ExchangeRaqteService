@@ -12,16 +12,18 @@ public class AddCurrencyTests
     {
         var today = DateTime.Today;
         var tomorrow = today.AddDays(1);
+        var currency = "USD";
 
-        var actual = new Currency("USD", today, tomorrow, 1200);
+        var actual = new Currency(currency, today, tomorrow, 1200);
 
-        actual.Name.Should().BeEquivalentTo("USD");
+        actual.Name.Should().BeEquivalentTo(currency);
         var expectedExchangeRate =
             new ExchangeRateBuilder()
                 .WithFromDate(today).WithToDate(tomorrow).WithPrice(1200)
                 .Build();
         actual.CurrentExchangeRate.Should().BeEquivalentTo(expectedExchangeRate);
-        actual.ExchangeRates.First().Should().BeEquivalentTo(expectedExchangeRate);
+        actual.ExchangeRates.Should().HaveCount(1);
+        actual.ExchangeRates.Should().AllSatisfy(ex => ex.Should().BeEquivalentTo(expectedExchangeRate));
     }
 
     [Fact]

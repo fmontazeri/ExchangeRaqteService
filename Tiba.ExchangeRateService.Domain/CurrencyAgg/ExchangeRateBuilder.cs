@@ -2,6 +2,7 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public class ExchangeRateBuilder : IExchangeRate
 {
+    public string Currency { get; private set; }
     public DateTime FromDate { get; private set; }
     public DateTime ToDate { get; private set; }
     public decimal Price { get; private set; }
