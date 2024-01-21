@@ -1,13 +1,6 @@
-using Tiba.ExchangeRateService.Domain.ExchangeRates.Exceptions;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
-namespace Tiba.ExchangeRateService.Domain.ExchangeRates;
-
-public interface IExchangeRate
-{
-    public DateTime FromDate { get; }
-    public DateTime ToDate { get; }
-    public decimal Price { get; }
-}
+namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 internal class ExchangeRate : IExchangeRate
 {
@@ -26,7 +19,7 @@ internal class ExchangeRate : IExchangeRate
     private void GuardAgainstInvalidTimePeriod(DateTime fromDate, DateTime toDate, DateTime? startDate = null)
     {
         if (fromDate == default || toDate == default)
-            throw new TheTimePeriodInNotValidException();
+            throw new TheTimePeriodIsEmptyOrDefaultException();
         if (startDate.HasValue && fromDate <= startDate || toDate <= startDate)
             throw new OverlapTimePeriodException(startDate.Value);
         if (fromDate > toDate)

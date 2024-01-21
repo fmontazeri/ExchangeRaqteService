@@ -1,4 +1,4 @@
-namespace Tiba.ExchangeRateService.Domain.ExchangeRates;
+namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public class TestExchangeRate : IExchangeRate
 {

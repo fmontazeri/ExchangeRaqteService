@@ -1,6 +1,6 @@
 using FluentAssertions;
-using Tiba.ExchangeRateService.Domain.ExchangeRates;
-using Tiba.ExchangeRateService.Domain.ExchangeRates.Exceptions;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.ExchangeRatesTests;
 

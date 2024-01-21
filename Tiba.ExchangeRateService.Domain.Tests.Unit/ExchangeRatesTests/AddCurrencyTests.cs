@@ -1,6 +1,6 @@
 using FluentAssertions;
-using Tiba.ExchangeRateService.Domain.ExchangeRates;
-using Tiba.ExchangeRateService.Domain.ExchangeRates.Exceptions;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.ExchangeRatesTests;
@@ -20,7 +20,7 @@ public class AddCurrencyTests
             new ExchangeRateBuilder()
                 .WithFromDate(today).WithToDate(tomorrow).WithPrice(1200)
                 .Build();
-        actual.LastExchangeRate.Should().BeEquivalentTo(expectedExchangeRate);
+        actual.CurrentExchangeRate.Should().BeEquivalentTo(expectedExchangeRate);
         actual.ExchangeRates.First().Should().BeEquivalentTo(expectedExchangeRate);
     }
 
@@ -28,12 +28,12 @@ public class AddCurrencyTests
     public void Constructor_Should_Not_Create_Currency_When_FromDate_Or_ToDate_Has_Not_Value()
     {
         var defaultDate = new DateTime();
-        var actual = Assert.Throws<TheTimePeriodInNotValidException>(() =>
+        var actual = Assert.Throws<TheTimePeriodIsEmptyOrDefaultException>(() =>
         {
             var actual = new Currency("USD", defaultDate, defaultDate, 1200);
         });
 
-        actual.Message.Should().BeEquivalentTo(TheTimePeriodInNotValidException.ErrorMessage);
+        actual.Message.Should().BeEquivalentTo(TheTimePeriodIsEmptyOrDefaultException.ErrorMessage);
     }
 
     [Fact]

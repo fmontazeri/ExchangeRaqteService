@@ -1,4 +1,4 @@
-namespace Tiba.ExchangeRateService.Domain.ExchangeRates.Exceptions;
+namespace Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 public class PriceIsNotValidException() : Exception(ErrorMessage)
 {
