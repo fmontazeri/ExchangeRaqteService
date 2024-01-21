@@ -16,7 +16,9 @@ public class AddCurrencyTests
     [Fact]
     public void Constructor_Should_Be_Initialize_Currency_Properly()
     {
-        var actual = new Currency(_builder.Currency, _builder.FromDate, _builder.ToDate, _builder.Price);
+        var options = _builder.Build();
+
+        var actual = new Currency(options);
 
         actual.Name.Should().BeEquivalentTo(_builder.Currency);
         var expectedExchangeRate = _builder.Build();
@@ -33,7 +35,8 @@ public class AddCurrencyTests
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
-            var actual = new Currency(currencyName, DateTime.Today, DateTime.Today.AddDays(1), 10000);
+            var options = _builder.WithCurrency(currencyName).Build();
+            var actual = new Currency(options);
         });
 
         exception.Message.Should().BeEquivalentTo(CurrencyIsNotDefinedException.ErrorMessage);
@@ -45,7 +48,8 @@ public class AddCurrencyTests
         var defaultDate = new DateTime();
         var actual = Assert.Throws<TheTimePeriodIsEmptyOrDefaultException>(() =>
         {
-            var actual = new Currency("USD", defaultDate, defaultDate, 1200);
+            var options = _builder.WithFromDate(defaultDate).WithToDate(defaultDate).Build();
+            var actual = new Currency(options);
         });
 
         actual.Message.Should().BeEquivalentTo(TheTimePeriodIsEmptyOrDefaultException.ErrorMessage);
@@ -54,17 +58,16 @@ public class AddCurrencyTests
     [Fact]
     public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_The_Last_Time_Period()
     {
-        var today = DateTime.Today;
-        var tomorrow = today.AddDays(1);
-        var afterTomorrow = tomorrow.AddDays(2);
-        var actual = new Currency("USD", today, tomorrow, 46000);
+        var options = _builder.WithFromDate(DateTime.Today).WithToDate(DateTime.Today.AddDays(1)).Build();
+        var actual = new Currency(options);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            actual.Add(tomorrow, afterTomorrow, 54000);
+            actual.Add(DateTime.Today.AddDays(CurrencyRateConsts.ONE_DAY),
+                DateTime.Today.AddDays(CurrencyRateConsts.SOME_DAYS), CurrencyRateConsts.SOME_PRICE);
         });
 
-        var expectedMessage = string.Format(OverlapTimePeriodException.ErrorMessage, tomorrow);
+        var expectedMessage = string.Format(OverlapTimePeriodException.ErrorMessage, options.ToDate);
         exception.Message.Should().Be(expectedMessage);
     }
 }

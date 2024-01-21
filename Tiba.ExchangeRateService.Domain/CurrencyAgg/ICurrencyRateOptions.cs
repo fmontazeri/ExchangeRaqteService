@@ -1,6 +1,6 @@
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
-public interface ICurrencyRate
+public interface ICurrencyRateOptions
 {
     public string Currency { get;}
     public DateTime FromDate { get; }

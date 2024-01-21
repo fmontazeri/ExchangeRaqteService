@@ -4,23 +4,22 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public class Currency
 {
-    public Currency(string name, DateTime fromDate, DateTime toDate, decimal price)
+    public Currency(ICurrencyRateOptions options)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(options.Currency))
             throw new CurrencyIsNotDefinedException();
-        
-        this.Name = name;
-        var exchangeRate = new CurrencyRate(name, fromDate, toDate, price);
-        //We can add to exchange rates by event
-        this._currencyRates.Add(exchangeRate);
-        this.LastCurrencyRate = exchangeRate;
+
+        this.Name = options.Currency;
+        var currencyRate = new CurrencyRate(options);
+        this._currencyRates.Add(currencyRate);
+        this.LastCurrencyRate = currencyRate;
     }
 
     public string Name { get; private set; }
 
     private List<CurrencyRate> _currencyRates = new();
-    public IReadOnlyCollection<ICurrencyRate> CurrencyRates => _currencyRates;
-    public ICurrencyRate? LastCurrencyRate { get; private set; }
+    public IReadOnlyCollection<ICurrencyRateOptions> CurrencyRates => _currencyRates;
+    public ICurrencyRateOptions? LastCurrencyRate { get; private set; }
 
     public void Add(DateTime fromDate, DateTime toDate, decimal price)
     {

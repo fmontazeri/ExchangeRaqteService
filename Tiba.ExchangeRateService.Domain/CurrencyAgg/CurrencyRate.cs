@@ -2,9 +2,10 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
-public class CurrencyRate : ICurrencyRate
+public class CurrencyRate : ICurrencyRateOptions
 {
-    internal CurrencyRate(string currency, DateTime fromDate, DateTime toDate, decimal price, DateTime? startDate = null)
+    internal CurrencyRate(string currency, DateTime fromDate, DateTime toDate, decimal price,
+        DateTime? startDate = null)
     {
         if (price <= 0)
             throw new PriceIsNotValidException();
@@ -12,12 +13,15 @@ public class CurrencyRate : ICurrencyRate
             throw new CurrencyIsNotDefinedException();
 
         GuardAgainstInvalidTimePeriod(fromDate, toDate, startDate);
-
         this.Currency = currency;
         this.FromDate = fromDate;
         this.ToDate = toDate;
         this.Price = price;
     }
+
+    internal CurrencyRate(ICurrencyRateOptions options, DateTime? startDate = null) : this(options.Currency,
+        options.FromDate, options.ToDate, options.Price, startDate)
+    {}
 
     private void GuardAgainstInvalidTimePeriod(DateTime fromDate, DateTime toDate, DateTime? startDate = null)
     {

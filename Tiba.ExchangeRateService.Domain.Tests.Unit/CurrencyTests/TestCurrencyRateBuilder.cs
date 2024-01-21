@@ -3,7 +3,7 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
-public class TestCurrencyRateBuilder : ICurrencyRate
+public class TestCurrencyRateBuilder : ICurrencyRateOptions
 {
     public string Currency { get; private set; }
     public DateTime FromDate { get; private set; }
@@ -19,9 +19,9 @@ public class TestCurrencyRateBuilder : ICurrencyRate
         WithPrice(CurrencyRateConsts.SOME_PRICE);
     }
 
-    public void Assert(ICurrencyRate actual)
+    public void Assert(ICurrencyRateOptions actual)
     {
-        actual.Should().BeEquivalentTo<ICurrencyRate>(this);
+        actual.Should().BeEquivalentTo<ICurrencyRateOptions>(this);
     }
     public TestCurrencyRateBuilder WithCurrency(string currency)
     {
@@ -47,9 +47,9 @@ public class TestCurrencyRateBuilder : ICurrencyRate
         return this;
     }
 
-    public ICurrencyRate Build()
+    public ICurrencyRateOptions Build()
     {
-        return new CurrencyRateBuilder()
+        return new CurrencyRateOptionsBuilder()
             .WithCurrency(this.Currency)
             .WithFromDate(this.FromDate)
             .WithToDate(this.ToDate)
