@@ -20,11 +20,12 @@ public class AddCurrencyTests
             new ExchangeRateBuilder()
                 .WithFromDate(today).WithToDate(tomorrow).WithPrice(1200)
                 .Build();
+        actual.LastExchangeRate.Should().BeEquivalentTo(expectedExchangeRate);
         actual.ExchangeRates.First().Should().BeEquivalentTo(expectedExchangeRate);
     }
 
     [Fact]
-    public void Constructor_Should_Not_Add_Currency_When_FromDate_Or_ToDate_Has_Not_Value()
+    public void Constructor_Should_Not_Create_Currency_When_FromDate_Or_ToDate_Has_Not_Value()
     {
         var defaultDate = new DateTime();
         var actual = Assert.Throws<TheTimePeriodInNotValidException>(() =>
@@ -36,7 +37,7 @@ public class AddCurrencyTests
     }
 
     [Fact]
-    public void Constructor_Should_Not_Add_Currency_When_The_New_Time_Period_Overlaps_With_The_Last_Time_Period()
+    public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_The_Last_Time_Period()
     {
         var today = DateTime.Today;
         var tomorrow = today.AddDays(1);
