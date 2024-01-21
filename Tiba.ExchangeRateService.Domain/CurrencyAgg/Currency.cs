@@ -10,14 +10,18 @@ public class Currency
             throw new CurrencyIsNotDefinedException();
 
         this.Name = options.Currency;
-        var currencyRate = new CurrencyRate(options);
+        var currencyRate = new CurrencyRateOptionsBuilder()
+            .WithFromDate(options.FromDate)
+            .WithToDate(options.ToDate)
+            .WithPrice(options.Price)
+            .WithCurrency(options.Currency).Build();
         this._currencyRates.Add(currencyRate);
         this.LastCurrencyRate = currencyRate;
     }
 
     public string Name { get; private set; }
 
-    private List<CurrencyRate> _currencyRates = new();
+    private List<ICurrencyRateOptions> _currencyRates = new();
     public IReadOnlyCollection<ICurrencyRateOptions> CurrencyRates => _currencyRates;
     public ICurrencyRateOptions? LastCurrencyRate { get; private set; }
 
