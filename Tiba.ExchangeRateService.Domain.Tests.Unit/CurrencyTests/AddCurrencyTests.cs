@@ -58,20 +58,42 @@ public class AddCurrencyTests
         actual.Message.Should().BeEquivalentTo(TheTimePeriodIsEmptyOrDefaultException.ErrorMessage);
     }
 
-    [Fact]
-    public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_The_Last_Time_Period()
+    [Theory]
+    [InlineData(1, 10, 2, 5)]
+    [InlineData(3, 7, 1, 10)]
+    [InlineData(3, 10, 1, 5)]
+    [InlineData(1, 8, 6, 10)]
+    public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_The_Last_Time_Period
+        (int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var today = DateTime.Today;
-        var options = _builder.WithFromDate(today).WithToDate(today.AddDays(CurrencyRateConsts.ONE_DAY)).Build();
+        var options = _builder.WithFromDate(today.AddDays(fromDate1)).WithToDate(today.AddDays(toDate1)).Build();
         var actual = NewCurrency(options);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            actual.Add(today, today.AddDays(CurrencyRateConsts.SOME_DAYS),
+            actual.Add(today.AddDays(fromDate2), today.AddDays(toDate2),
                 CurrencyRateConsts.SOME_PRICE);
         });
 
         var expectedMessage = string.Format(OverlapTimePeriodException.ErrorMessage, options.ToDate);
         exception.Message.Should().Be(expectedMessage);
+    }
+
+
+    [Theory]
+    [InlineData(1, 10, 11, 15)]
+    [InlineData(3, 7, 8, 20)]
+    public void Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(int fromDate1, int toDate1, int fromDate2, int toDate2)
+    {
+        var today = DateTime.Today;
+        var options = _builder.WithFromDate(today.AddDays(fromDate1)).WithToDate(today.AddDays(toDate1)).Build();
+        var actual = NewCurrency(options);
+
+        actual.Add(today.AddDays(fromDate2), today.AddDays(toDate2),
+            CurrencyRateConsts.SOME_PRICE);
+
+        //Need to more assertion
+        actual.CurrencyRates.Should().HaveCount(2);
     }
 }

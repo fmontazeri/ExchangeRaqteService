@@ -23,7 +23,7 @@ public class Currency
 
     private void GuardAgainstOverlappingTheTimePeriod(DateTime fromDate, DateTime toDate)
     {
-        if (this._currencyRates.Any(currencyRate => fromDate < currencyRate.ToDate && currencyRate.FromDate < toDate))
+        if (this._currencyRates.Any(currencyRate => fromDate <= currencyRate.ToDate && currencyRate.FromDate <= toDate))
             throw new OverlapTimePeriodException();
     }
 
