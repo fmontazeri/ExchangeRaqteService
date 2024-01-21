@@ -61,13 +61,14 @@ public class AddCurrencyTests
     [Fact]
     public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_The_Last_Time_Period()
     {
-        var options = _builder.WithFromDate(DateTime.Today).WithToDate(DateTime.Today.AddDays(1)).Build();
-        var actual = new Currency(options);
+        var today = DateTime.Today;
+        var options = _builder.WithFromDate(today).WithToDate(today.AddDays(CurrencyRateConsts.ONE_DAY)).Build();
+        var actual = NewCurrency(options);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            actual.Add(DateTime.Today.AddDays(CurrencyRateConsts.ONE_DAY),
-                DateTime.Today.AddDays(CurrencyRateConsts.SOME_DAYS), CurrencyRateConsts.SOME_PRICE);
+            actual.Add(today, today.AddDays(CurrencyRateConsts.SOME_DAYS),
+                CurrencyRateConsts.SOME_PRICE);
         });
 
         var expectedMessage = string.Format(OverlapTimePeriodException.ErrorMessage, options.ToDate);

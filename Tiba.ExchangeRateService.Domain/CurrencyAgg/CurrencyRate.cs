@@ -19,16 +19,14 @@ public class CurrencyRate : ICurrencyRateOptions
         this.Price = price;
     }
 
-    internal CurrencyRate(ICurrencyRateOptions options, DateTime? startDate = null) : this(options.Currency,
-        options.FromDate, options.ToDate, options.Price, startDate)
-    {}
+    // internal CurrencyRate(ICurrencyRateOptions options, DateTime? startDate = null) : this(options.Currency,
+    //     options.FromDate, options.ToDate, options.Price, startDate)
+    // {}
 
     private void GuardAgainstInvalidTimePeriod(DateTime fromDate, DateTime toDate, DateTime? startDate = null)
     {
         if (fromDate == default || toDate == default)
             throw new TheTimePeriodIsEmptyOrDefaultException();
-        if (startDate.HasValue && fromDate <= startDate || toDate <= startDate)
-            throw new OverlapTimePeriodException(startDate.Value);
         if (fromDate > toDate)
             throw new FromDateIsNotValidException();
     }
