@@ -15,7 +15,7 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
     {
         WithCurrency(CurrencyRateConsts.SOME_CURRENCY);
         WithFromDate(DateTime.Today);
-        WithToDate(DateTime.Today.AddDays(CurrencyRateConsts.SOME_DAYS));
+        WithToDate(DateTime.Today.AddDays(TimePeriod.SOME_DAYS));
         WithPrice(CurrencyRateConsts.SOME_PRICE);
     }
 
@@ -23,6 +23,7 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
     {
         actual.Should().BeEquivalentTo<ICurrencyRateOptions>(this);
     }
+
     public TestCurrencyRateBuilder WithCurrency(string currency)
     {
         this.Currency = currency;
@@ -47,12 +48,18 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
         return this;
     }
 
-    public ICurrencyRateOptions Build()
+
+    public CurrencyRate Build()
     {
         return new CurrencyRateOptionsBuilder()
             .WithCurrency(this.Currency)
             .WithFromDate(this.FromDate)
             .WithToDate(this.ToDate)
             .WithPrice(this.Price).Build();
+    }
+
+    public ICurrencyRateOptions BuildOptions()
+    {
+        return this;
     }
 }

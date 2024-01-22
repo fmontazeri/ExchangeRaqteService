@@ -18,7 +18,6 @@ public class Currency
             .WithPrice(options.Price)
             .WithCurrency(options.Currency).Build();
         this._currencyRates.Add(currencyRate);
-        this.LastCurrencyRate = currencyRate;
     }
 
     private void GuardAgainstOverlappingTheTimePeriod(DateTime fromDate, DateTime toDate)
@@ -31,12 +30,12 @@ public class Currency
 
     private List<ICurrencyRateOptions> _currencyRates = new();
     public IReadOnlyCollection<ICurrencyRateOptions> CurrencyRates => _currencyRates;
-    public ICurrencyRateOptions? LastCurrencyRate { get; private set; }
 
-    public void Add(DateTime fromDate, DateTime toDate, decimal price)
+    public void Add(ICurrencyRateOptions options)
     {
-        GuardAgainstOverlappingTheTimePeriod(fromDate, toDate);
+        GuardAgainstOverlappingTheTimePeriod(options.FromDate, options.ToDate);
 
-        this._currencyRates.Add(new CurrencyRate(this.Name, fromDate, toDate, price, LastCurrencyRate?.ToDate));
+        this._currencyRates
+            .Add(new CurrencyRate(this.Name, options.FromDate, options.ToDate, options.Price));
     }
 }

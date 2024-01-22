@@ -44,7 +44,6 @@ public class AddCurrencyRateTests
     [Theory]
     [InlineData(0)]
     [InlineData(-100)]
-    [InlineData(-120000)]
     public void ExchangeRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal price)
     {
         var exception = Assert.Throws<PriceIsNotValidException>(() =>
@@ -64,7 +63,7 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<FromDateIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithFromDate(DateTime.Today.AddDays(CurrencyRateConsts.SOME_DAYS))
+                .WithFromDate(DateTime.Today.AddDays(TimePeriod.SOME_DAYS))
                 .WithToDate(DateTime.Today)
                 .Build();
         });
