@@ -20,8 +20,8 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
         this.Currency = CurrencyConsts.SOME_CURRENCY;
         this.Amount = CurrencyConsts.SOME_PRICE;
         _builder.WithMoney(new Money(this.Amount, this.Currency));
-        this.FromDate = TestTimePeriod.TODAY;
-        this.ToDate = TestTimePeriod.TODAY.AddDays(TestTimePeriod.SOME_DAYS);
+        this.FromDate = DayConsts.TODAY;
+        this.ToDate = DayConsts.TODAY.AddDays(DayConsts.SOME_DAYS);
         _builder.WithTimePeriod(CurrencyAgg.TimePeriod.New(this.FromDate, this.ToDate));
     }
 

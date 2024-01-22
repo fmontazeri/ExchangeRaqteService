@@ -46,31 +46,31 @@ public class AddCurrencyTests
 
 
     [Theory]
-    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.SECOND_DAY,
-        TestTimePeriod.NINTH_DAY)]
-    [InlineData(TestTimePeriod.SECOND_DAY, TestTimePeriod.NINTH_DAY, TestTimePeriod.FIRST_DAY,
-        TestTimePeriod.TENTH_DAY)]
-    [InlineData(TestTimePeriod.SECOND_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.FIRST_DAY,
-        TestTimePeriod.NINTH_DAY)]
-    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.NINTH_DAY, TestTimePeriod.NINTH_DAY,
-        TestTimePeriod.TENTH_DAY)]
-    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.FIRST_DAY,
-        TestTimePeriod.TENTH_DAY)]
-    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.FIRST_DAY, TestTimePeriod.FIRST_DAY,
-        TestTimePeriod.FIRST_DAY)]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.TENTH_DAY, DayConsts.SECOND_DAY,
+        DayConsts.NINTH_DAY)]
+    [InlineData(DayConsts.SECOND_DAY, DayConsts.NINTH_DAY, DayConsts.FIRST_DAY,
+        DayConsts.TENTH_DAY)]
+    [InlineData(DayConsts.SECOND_DAY, DayConsts.TENTH_DAY, DayConsts.FIRST_DAY,
+        DayConsts.NINTH_DAY)]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.NINTH_DAY, DayConsts.NINTH_DAY,
+        DayConsts.TENTH_DAY)]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.TENTH_DAY, DayConsts.FIRST_DAY,
+        DayConsts.TENTH_DAY)]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.FIRST_DAY, DayConsts.FIRST_DAY,
+        DayConsts.FIRST_DAY)]
     public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_Others
         (int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var options = _builder
-            .WithFromDate(TestTimePeriod.TODAY.AddDays(fromDate1))
-            .WithToDate(TestTimePeriod.TODAY.AddDays(toDate1)).BuildOptions();
+            .WithFromDate(DayConsts.TODAY.AddDays(fromDate1))
+            .WithToDate(DayConsts.TODAY.AddDays(toDate1)).BuildOptions();
         var actual = NewCurrency(options);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
             actual.Add(
-                CurrencyAgg.TimePeriod.New(TestTimePeriod.TODAY.AddDays(fromDate2),
-                    TestTimePeriod.TODAY.AddDays(toDate2)),
+                CurrencyAgg.TimePeriod.New(DayConsts.TODAY.AddDays(fromDate2),
+                    DayConsts.TODAY.AddDays(toDate2)),
                 CurrencyConsts.SOME_PRICE);
         });
 
@@ -79,12 +79,12 @@ public class AddCurrencyTests
 
 
     [Theory]
-    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.SECOND_DAY, TestTimePeriod.NINTH_DAY,
-        TestTimePeriod.TENTH_DAY)]
-    [InlineData(TestTimePeriod.NINTH_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.FIRST_DAY,
-        TestTimePeriod.SECOND_DAY)]
-    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.FIRST_DAY, TestTimePeriod.SECOND_DAY,
-        TestTimePeriod.SECOND_DAY)]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.SECOND_DAY, DayConsts.NINTH_DAY,
+        DayConsts.TENTH_DAY)]
+    [InlineData(DayConsts.NINTH_DAY, DayConsts.TENTH_DAY, DayConsts.FIRST_DAY,
+        DayConsts.SECOND_DAY)]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.FIRST_DAY, DayConsts.SECOND_DAY,
+        DayConsts.SECOND_DAY)]
     public void
         Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
             int fromDate1, int toDate1, int fromDate2, int toDate2)
