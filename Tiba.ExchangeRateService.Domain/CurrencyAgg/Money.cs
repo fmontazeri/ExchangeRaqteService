@@ -7,10 +7,10 @@ public class Money :IMoneyOptions, IEquatable<Money>
     public string Currency { get; private set; }
     public decimal Amount { get; private set; }
 
-    public Money(decimal amount, string currency)
+    private Money(decimal amount, string currency)
     {
         if (amount <= 0)
-            throw new PriceIsNotValidException();
+            throw new AmountIsNotValidException();
         if (string.IsNullOrWhiteSpace(currency))
             throw new CurrencyIsNotDefinedException();
         this.Currency = currency;
@@ -24,6 +24,10 @@ public class Money :IMoneyOptions, IEquatable<Money>
         return new Money(Amount + other.Amount, Currency);
     }
 
+    public static Money New(decimal amount, string currency)
+    {
+        return new Money(amount, currency);
+    }
     public bool Equals(Money? other)
     {
         if (ReferenceEquals(null, other)) return false;

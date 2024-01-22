@@ -37,7 +37,7 @@ public class Currency
 
         var currencyRateOptions = new CurrencyRateOptionsBuilder()
             .WithTimePeriod(timePeriod)
-            .WithMoney(new Money(price, this.Name))
+            .WithMoney(Money.New(price, this.Name))
             .Build();
         this._currencyRates.Add(currencyRateOptions);
     }

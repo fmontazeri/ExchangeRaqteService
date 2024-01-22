@@ -37,7 +37,7 @@ public class AddCurrencyTests
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
-            var options = _builder.WithMoney(new Money(CurrencyConsts.SOME_PRICE, currencyName)).Build();
+            var options = _builder.WithMoney(CurrencyAgg.Money.New(CurrencyConsts.SOME_PRICE, currencyName)).Build();
             var actual = NewCurrency(options);
         });
 

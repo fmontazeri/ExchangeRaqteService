@@ -19,7 +19,7 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
         _builder = new CurrencyRateOptionsBuilder();
         this.Currency = CurrencyConsts.SOME_CURRENCY;
         this.Amount = CurrencyConsts.SOME_PRICE;
-        _builder.WithMoney(new Money(this.Amount, this.Currency));
+        _builder.WithMoney(CurrencyAgg.Money.New(this.Amount, this.Currency));
         this.FromDate = DayConsts.TODAY;
         this.ToDate = DayConsts.TODAY.AddDays(DayConsts.SOME_DAYS);
         _builder.WithTimePeriod(CurrencyAgg.TimePeriod.New(this.FromDate, this.ToDate));
@@ -33,14 +33,14 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
     public TestCurrencyRateBuilder WithCurrency(string currency)
     {
         this.Currency = currency;
-        _builder.WithMoney(new Money(_builder.Money.Amount, currency));
+        _builder.WithMoney(  CurrencyAgg.Money.New(_builder.Money.Amount, currency));
         return this;
     }
 
     public TestCurrencyRateBuilder WithAmount(decimal price)
     {
         this.Amount = price;
-        _builder.WithMoney(new Money(price, _builder.Money.Currency));
+        _builder.WithMoney(CurrencyAgg.Money.New(price, _builder.Money.Currency));
         return this;
     }
 

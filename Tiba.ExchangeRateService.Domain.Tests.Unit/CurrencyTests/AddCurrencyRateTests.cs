@@ -35,7 +35,7 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
             var actual = _builder
-                .WithMoney(new Money(CurrencyConsts.SOME_PRICE, currencyName))
+                .WithMoney(CurrencyAgg.Money.New(CurrencyConsts.SOME_PRICE, currencyName))
                 .Build();
         });
 
@@ -47,14 +47,14 @@ public class AddCurrencyRateTests
     [InlineData(-1)]
     public void ExchangeRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal amount)
     {
-        var exception = Assert.Throws<PriceIsNotValidException>(() =>
+        var exception = Assert.Throws<AmountIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithMoney(new Money(amount , CurrencyConsts.SOME_CURRENCY))
+                .WithMoney(CurrencyAgg.Money.New(amount , CurrencyConsts.SOME_CURRENCY))
                 .Build();
         });
 
-        exception.Message.Should().BeEquivalentTo(PriceIsNotValidException.ErrorMessage);
+        exception.Message.Should().BeEquivalentTo(AmountIsNotValidException.ErrorMessage);
     }
 
 
