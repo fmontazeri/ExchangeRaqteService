@@ -13,10 +13,10 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
 
     public TestCurrencyRateBuilder()
     {
-        WithCurrency(CurrencyRateConsts.SOME_CURRENCY);
+        WithCurrency(CurrencyConsts.SOME_CURRENCY);
         WithFromDate(DateTime.Today);
         WithToDate(DateTime.Today.AddDays(TimePeriod.SOME_DAYS));
-        WithPrice(CurrencyRateConsts.SOME_PRICE);
+        WithPrice(CurrencyConsts.SOME_PRICE);
     }
 
     public void Assert(ICurrencyRateOptions actual)

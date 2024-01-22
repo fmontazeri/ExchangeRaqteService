@@ -6,7 +6,7 @@ public static class TimePeriod
         public const int SECOND_DAY = 2;
         public const int NINTH_DAY = 9;
         public const int TENTH_DAY = 10;
-        public static readonly DateTime NullORDefaultDATE = new();
+        public static readonly DateTime NULL_OR_Default_DATE = new();
         public static readonly DateTime TODAY = DateTime.Today;
         public const int SOME_DAYS = 10;
 }

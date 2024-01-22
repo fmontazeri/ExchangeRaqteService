@@ -44,18 +44,7 @@ public class AddCurrencyTests
         exception.Message.Should().BeEquivalentTo(CurrencyIsNotDefinedException.ErrorMessage);
     }
 
-    [Fact]
-    public void Constructor_Should_Not_Create_Currency_When_FromDate_Or_ToDate_Has_Not_Value()
-    {
-        var actual = Assert.Throws<TheTimePeriodIsEmptyOrDefaultException>(() =>
-        {
-            var options = _builder.WithFromDate(TimePeriod.NullORDefaultDATE).WithToDate(TimePeriod.NullORDefaultDATE)
-                .Build();
-            var actual = NewCurrency(options);
-        });
 
-        actual.Message.Should().BeEquivalentTo(TheTimePeriodIsEmptyOrDefaultException.ErrorMessage);
-    }
 
     [Theory]
     [InlineData(TimePeriod.FIRST_DAY, TimePeriod.TENTH_DAY, TimePeriod.SECOND_DAY, TimePeriod.NINTH_DAY)]
