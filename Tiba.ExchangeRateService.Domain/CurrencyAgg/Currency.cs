@@ -9,19 +9,20 @@ public class Currency
         if (string.IsNullOrWhiteSpace(options.Money.Currency))
             throw new CurrencyIsNotDefinedException();
 
-        GuardAgainstOverlappingTheTimePeriod(options.FromDate, options.ToDate);
+        GuardAgainstOverlappingTheTimePeriod(options.TimePeriod);
 
         this.Name = options.Money.Currency;
         var currencyRateOptions = new CurrencyRateOptionsBuilder()
-            .WithFromDate(options.FromDate)
-            .WithToDate(options.ToDate)
+            .WithTimePeriod(options.TimePeriod)
             .WithMoney(options.Money).Build();
         this._currencyRates.Add(currencyRateOptions);
     }
 
-    private void GuardAgainstOverlappingTheTimePeriod(DateTime fromDate, DateTime toDate)
+    private void GuardAgainstOverlappingTheTimePeriod(ITimePeriodOptions timePeriod)
     {
-        if (this._currencyRates.Any(currencyRate => fromDate <= currencyRate.ToDate && currencyRate.FromDate <= toDate))
+        if (this._currencyRates.Any(currencyRate =>
+                timePeriod.FromDate <= currencyRate.TimePeriod.ToDate &&
+                currencyRate.TimePeriod.FromDate <= timePeriod.ToDate))
             throw new OverlapTimePeriodException();
     }
 
@@ -30,13 +31,12 @@ public class Currency
     private List<ICurrencyRateOptions> _currencyRates = new();
     public IReadOnlyCollection<ICurrencyRateOptions> CurrencyRates => _currencyRates;
 
-    public void Add(DateTime fromDate, DateTime toDate, decimal price)
+    public void Add(ITimePeriodOptions timePeriod , decimal price)
     {
-        GuardAgainstOverlappingTheTimePeriod(fromDate, toDate);
-        
+        GuardAgainstOverlappingTheTimePeriod(timePeriod);
+
         var currencyRateOptions = new CurrencyRateOptionsBuilder()
-            .WithFromDate(fromDate)
-            .WithToDate(toDate)
+            .WithTimePeriod(timePeriod)
             .WithMoney(new Money(price, this.Name))
             .Build();
         this._currencyRates.Add(currencyRateOptions);

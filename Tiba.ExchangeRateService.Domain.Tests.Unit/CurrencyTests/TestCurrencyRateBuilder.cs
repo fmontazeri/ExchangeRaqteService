@@ -8,9 +8,10 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
     private CurrencyRateOptionsBuilder _builder;
     public string Currency { get; private set; }
     public decimal Amount { get; private set; }
-    public DateTime FromDate => _builder.FromDate;
-    public DateTime ToDate => _builder.ToDate;
-    public IMoneyOption Money => _builder.Money;
+    public IMoneyOptions Money => _builder.Money;
+    public DateTime FromDate { get; private set; }
+    public DateTime ToDate { get; private set; }
+    public ITimePeriodOptions TimePeriod => _builder.TimePeriod;
 
 
     public TestCurrencyRateBuilder()
@@ -19,8 +20,9 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
         this.Currency = CurrencyConsts.SOME_CURRENCY;
         this.Amount = CurrencyConsts.SOME_PRICE;
         _builder.WithMoney(new Money(this.Amount, this.Currency));
-        _builder.WithFromDate(TimePeriod.TODAY);
-        _builder.WithToDate(TimePeriod.TODAY.AddDays(TimePeriod.SOME_DAYS));
+        this.FromDate = TestTimePeriod.TODAY;
+        this.ToDate = TestTimePeriod.TODAY.AddDays(TestTimePeriod.SOME_DAYS);
+        _builder.WithTimePeriod(CurrencyAgg.TimePeriod.New(this.FromDate, this.ToDate));
     }
 
     public void Assert(ICurrencyRateOptions actual)
@@ -44,20 +46,31 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
 
     public TestCurrencyRateBuilder WithFromDate(DateTime fromDate)
     {
-        _builder.WithFromDate(fromDate);
+        this.FromDate = fromDate;
+        _builder.WithTimePeriod(CurrencyAgg.TimePeriod.New(fromDate, _builder.TimePeriod.ToDate));
         return this;
     }
 
     public TestCurrencyRateBuilder WithToDate(DateTime toDate)
     {
-        _builder.WithToDate(toDate);
+        this.ToDate = toDate;
+        _builder.WithTimePeriod(CurrencyAgg.TimePeriod.New(_builder.TimePeriod.FromDate, ToDate));
         return this;
     }
-    public TestCurrencyRateBuilder WithMoney(IMoneyOption money)
+
+    public TestCurrencyRateBuilder WithMoney(IMoneyOptions options)
     {
-        this.Currency = money.Currency;
-        this.Amount = money.Amount;
-        _builder.WithMoney(money);
+        this.Currency = options.Currency;
+        this.Amount = options.Amount;
+        _builder.WithMoney(options);
+        return this;
+    }
+
+    public TestCurrencyRateBuilder WithTimePeriod(ITimePeriodOptions options)
+    {
+        this.FromDate = options.FromDate;
+        this.ToDate = options.ToDate;
+        _builder.WithTimePeriod(options);
         return this;
     }
 

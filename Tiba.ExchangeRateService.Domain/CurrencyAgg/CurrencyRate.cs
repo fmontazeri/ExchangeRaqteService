@@ -4,24 +4,12 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public class CurrencyRate : ICurrencyRateOptions
 {
-    internal CurrencyRate(IMoneyOption money, DateTime fromDate, DateTime toDate)
+    internal CurrencyRate(IMoneyOptions money, ITimePeriodOptions timePeriod)
     {
-        GuardAgainstInvalidTimePeriod(fromDate, toDate);
         this.Money = money;
-        this.FromDate = fromDate;
-        this.ToDate = toDate;
+        this.TimePeriod = timePeriod;
     }
 
-    private void GuardAgainstInvalidTimePeriod(DateTime fromDate, DateTime toDate)
-    {
-        if (fromDate == default) throw new FromDateIsEmptyException();
-        if (toDate == default)
-            throw new ToDateIsEmptyException();
-        if (fromDate > toDate)
-            throw new FromDateIsNotValidException();
-    }
-
-    public IMoneyOption Money { get; private set; }
-    public DateTime FromDate { get; private set; }
-    public DateTime ToDate { get; private set; }
+    public IMoneyOptions Money { get; private set; }
+    public ITimePeriodOptions TimePeriod { get; private set; }
 }

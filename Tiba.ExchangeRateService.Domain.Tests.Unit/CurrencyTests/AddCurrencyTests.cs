@@ -46,23 +46,31 @@ public class AddCurrencyTests
 
 
     [Theory]
-    [InlineData(TimePeriod.FIRST_DAY, TimePeriod.TENTH_DAY, TimePeriod.SECOND_DAY, TimePeriod.NINTH_DAY)]
-    [InlineData(TimePeriod.SECOND_DAY, TimePeriod.NINTH_DAY, TimePeriod.FIRST_DAY, TimePeriod.TENTH_DAY)]
-    [InlineData(TimePeriod.SECOND_DAY, TimePeriod.TENTH_DAY, TimePeriod.FIRST_DAY, TimePeriod.NINTH_DAY)]
-    [InlineData(TimePeriod.FIRST_DAY, TimePeriod.NINTH_DAY, TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY)]
-    [InlineData(TimePeriod.FIRST_DAY, TimePeriod.TENTH_DAY, TimePeriod.FIRST_DAY, TimePeriod.TENTH_DAY)]
-    [InlineData(TimePeriod.FIRST_DAY, TimePeriod.FIRST_DAY, TimePeriod.FIRST_DAY, TimePeriod.FIRST_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.SECOND_DAY,
+        TestTimePeriod.NINTH_DAY)]
+    [InlineData(TestTimePeriod.SECOND_DAY, TestTimePeriod.NINTH_DAY, TestTimePeriod.FIRST_DAY,
+        TestTimePeriod.TENTH_DAY)]
+    [InlineData(TestTimePeriod.SECOND_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.FIRST_DAY,
+        TestTimePeriod.NINTH_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.NINTH_DAY, TestTimePeriod.NINTH_DAY,
+        TestTimePeriod.TENTH_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.FIRST_DAY,
+        TestTimePeriod.TENTH_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.FIRST_DAY, TestTimePeriod.FIRST_DAY,
+        TestTimePeriod.FIRST_DAY)]
     public void Constructor_Should_Not_Create_Currency_When_The_New_Time_Period_Overlaps_With_Others
         (int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var options = _builder
-            .WithFromDate(TimePeriod.TODAY.AddDays(fromDate1))
-            .WithToDate(TimePeriod.TODAY.AddDays(toDate1)).BuildOptions();
+            .WithFromDate(TestTimePeriod.TODAY.AddDays(fromDate1))
+            .WithToDate(TestTimePeriod.TODAY.AddDays(toDate1)).BuildOptions();
         var actual = NewCurrency(options);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            actual.Add(TimePeriod.TODAY.AddDays(fromDate2), TimePeriod.TODAY.AddDays(toDate2),
+            actual.Add(
+                CurrencyAgg.TimePeriod.New(TestTimePeriod.TODAY.AddDays(fromDate2),
+                    TestTimePeriod.TODAY.AddDays(toDate2)),
                 CurrencyConsts.SOME_PRICE);
         });
 
@@ -71,9 +79,12 @@ public class AddCurrencyTests
 
 
     [Theory]
-    [InlineData(TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY, TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY)]
-    [InlineData(TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY, TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY)]
-    [InlineData(TimePeriod.FIRST_DAY, TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY, TimePeriod.SECOND_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.SECOND_DAY, TestTimePeriod.NINTH_DAY,
+        TestTimePeriod.TENTH_DAY)]
+    [InlineData(TestTimePeriod.NINTH_DAY, TestTimePeriod.TENTH_DAY, TestTimePeriod.FIRST_DAY,
+        TestTimePeriod.SECOND_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY, TestTimePeriod.FIRST_DAY, TestTimePeriod.SECOND_DAY,
+        TestTimePeriod.SECOND_DAY)]
     public void
         Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
             int fromDate1, int toDate1, int fromDate2, int toDate2)
@@ -83,11 +94,11 @@ public class AddCurrencyTests
             .WithToDate(DateTime.Today.AddDays(toDate1)).BuildOptions();
         var actual = NewCurrency(currencyRate1);
 
-        actual.Add(DateTime.Today.AddDays(fromDate2), DateTime.Today.AddDays(toDate2), CurrencyConsts.SOME_PRICE);
+        actual.Add(CurrencyAgg.TimePeriod.New(DateTime.Today.AddDays(fromDate2), DateTime.Today.AddDays(toDate2)),
+            CurrencyConsts.SOME_PRICE);
 
         var expectedCurrencyRate2 = _builder
-            .WithFromDate(DateTime.Today.AddDays(fromDate2))
-            .WithToDate(DateTime.Today.AddDays(toDate2))
+            .WithTimePeriod(TimePeriod.New(DateTime.Today.AddDays(fromDate2), DateTime.Today.AddDays(toDate2)))
             .BuildOptions();
         actual.AssertCurrencyRates(currencyRate1, expectedCurrencyRate2); //TODO : assert has error with equivalent
     }

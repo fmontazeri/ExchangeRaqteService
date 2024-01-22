@@ -1,6 +1,6 @@
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
-public static class TimePeriod
+public static class TestTimePeriod
 {
         public const int FIRST_DAY = 1;
         public const int SECOND_DAY = 2;

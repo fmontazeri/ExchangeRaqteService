@@ -14,8 +14,8 @@ public class AddCurrencyRateTests
     }
 
     [Theory]
-    [InlineData(TimePeriod.FIRST_DAY)]
-    [InlineData(TimePeriod.SECOND_DAY)]
+    [InlineData(TestTimePeriod.FIRST_DAY)]
+    [InlineData(TestTimePeriod.SECOND_DAY)]
     public void Constructor_Should_Initial_ExchangeRate_Correctly(int someDays)
     {
         var actual = _builder
@@ -64,8 +64,8 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<FromDateIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithFromDate(TimePeriod.TODAY.AddDays(TimePeriod.TENTH_DAY))
-                .WithToDate(TimePeriod.TODAY.AddDays(TimePeriod.FIRST_DAY))
+                .WithFromDate(TestTimePeriod.TODAY.AddDays(TestTimePeriod.TENTH_DAY))
+                .WithToDate(TestTimePeriod.TODAY.AddDays(TestTimePeriod.FIRST_DAY))
                 .Build();
         });
 
@@ -78,7 +78,7 @@ public class AddCurrencyRateTests
         var actual = Assert.Throws<FromDateIsEmptyException>(() =>
         {
             var currencyRate = _builder
-                .WithFromDate(TimePeriod.NULL_OR_Default_DATE)
+                .WithFromDate(TestTimePeriod.NULL_OR_Default_DATE)
                 .Build();
         });
 
@@ -92,7 +92,7 @@ public class AddCurrencyRateTests
         var actual = Assert.Throws<ToDateIsEmptyException>(() =>
         {
             var currencyRate = _builder
-                .WithToDate(TimePeriod.NULL_OR_Default_DATE)
+                .WithToDate(TestTimePeriod.NULL_OR_Default_DATE)
                 .Build();
         });
 

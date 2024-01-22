@@ -2,7 +2,7 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
-public class Money :IMoneyOption, IEquatable<Money>
+public class Money :IMoneyOptions, IEquatable<Money>
 {
     public string Currency { get; private set; }
     public decimal Amount { get; private set; }
