@@ -88,6 +88,6 @@ public class AddCurrencyTests
             .WithFromDate(DateTime.Today.AddDays(fromDate2))
             .WithToDate(DateTime.Today.AddDays(toDate2))
             .BuildOptions();
-        actual.AssertCurrencyRates(currencyRate1, expectedCurrencyRate2); //TODO : assert currency rates
+        actual.AssertCurrencyRates(currencyRate1, expectedCurrencyRate2); //TODO : assert has error with equivalent
     }
 }
