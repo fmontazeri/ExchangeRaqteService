@@ -74,8 +74,7 @@ public class AddCurrencyTests
     [InlineData(TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY, TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY)]
     [InlineData(TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY, TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY)]
     [InlineData(TimePeriod.FIRST_DAY, TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY, TimePeriod.SECOND_DAY)]
-    public void
-        Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
+    public void Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
             int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var currencyRate1 = _builder
@@ -89,6 +88,6 @@ public class AddCurrencyTests
             .WithFromDate(DateTime.Today.AddDays(fromDate2))
             .WithToDate(DateTime.Today.AddDays(toDate2))
             .BuildOptions();
-        actual.AssertCurrencyRates(currencyRate1, expectedCurrencyRate2);
+        actual.AssertCurrencyRates(currencyRate1, expectedCurrencyRate2); //TODO : assert currency rates
     }
 }

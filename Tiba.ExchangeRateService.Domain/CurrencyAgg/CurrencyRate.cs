@@ -18,11 +18,6 @@ public class CurrencyRate : ICurrencyRateOptions
         this.Price = price;
     }
 
-    internal CurrencyRate(ICurrencyRateOptions options) : this(options.Currency,
-        options.FromDate, options.ToDate, options.Price)
-    {
-    }
-
     private void GuardAgainstInvalidTimePeriod(DateTime fromDate, DateTime toDate, DateTime? startDate = null)
     {
         if (fromDate == default) throw new FromDateIsEmptyException();
