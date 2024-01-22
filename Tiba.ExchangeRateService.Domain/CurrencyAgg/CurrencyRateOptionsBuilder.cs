@@ -31,7 +31,7 @@ public sealed class CurrencyRateOptionsBuilder : ICurrencyRateOptions
         return this;
     }
 
-    public  CurrencyRate Build()
+    public  ICurrencyRateOptions Build()
     {
         return new CurrencyRate(Currency, FromDate, ToDate, Price);
     }

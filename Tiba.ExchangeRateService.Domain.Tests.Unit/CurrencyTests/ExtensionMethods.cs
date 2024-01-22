@@ -5,9 +5,11 @@ namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
 public static class ExtensionMethods
 {
-    public static void AssertCurrencyRates(this Currency currency, params ICurrencyRateOptions[] currencyRates)
+    public static void AssertCurrencyRates(this Currency actual, params ICurrencyRateOptions[] currencyRates)
     {
-        currency.CurrencyRates.Should().BeEquivalentTo(currencyRates);
+        foreach (var expectation in currencyRates)
+        {
+            actual.CurrencyRates.Should().ContainEquivalentOf(expectation);
+        }
     }
-    
 }

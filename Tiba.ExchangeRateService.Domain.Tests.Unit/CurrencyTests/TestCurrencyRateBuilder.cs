@@ -49,7 +49,7 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
     }
 
 
-    public CurrencyRate Build()
+    public ICurrencyRateOptions Build()
     {
         return new CurrencyRateOptionsBuilder()
             .WithCurrency(this.Currency)
