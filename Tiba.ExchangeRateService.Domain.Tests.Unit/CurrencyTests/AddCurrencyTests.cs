@@ -20,7 +20,7 @@ public class AddCurrencyTests
 
         var actual = NewCurrency(options);
 
-        actual.Name.Should().BeEquivalentTo(_builder.Currency);
+        actual.Name.Should().BeEquivalentTo(_builder.Money.Currency);
         actual.AssertCurrencyRates(options);
     }
 
@@ -37,7 +37,7 @@ public class AddCurrencyTests
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
-            var options = _builder.WithCurrency(currencyName).Build();
+            var options = _builder.WithMoney(new Money(CurrencyConsts.SOME_PRICE, currencyName)).Build();
             var actual = NewCurrency(options);
         });
 
@@ -74,7 +74,8 @@ public class AddCurrencyTests
     [InlineData(TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY, TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY)]
     [InlineData(TimePeriod.NINTH_DAY, TimePeriod.TENTH_DAY, TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY)]
     [InlineData(TimePeriod.FIRST_DAY, TimePeriod.FIRST_DAY, TimePeriod.SECOND_DAY, TimePeriod.SECOND_DAY)]
-    public void Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
+    public void
+        Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
             int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var currencyRate1 = _builder

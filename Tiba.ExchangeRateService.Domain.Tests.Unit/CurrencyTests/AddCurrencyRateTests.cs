@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
@@ -29,12 +30,12 @@ public class AddCurrencyRateTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void ExchangeRate_Should_Not_Constructed_When_Currency_Is_Not_Defined(string currency)
+    public void ExchangeRate_Should_Not_Constructed_When_Currency_Is_Not_Defined(string currencyName)
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
             var actual = _builder
-                .WithCurrency(currency)
+                .WithMoney(new Money(CurrencyConsts.SOME_PRICE, currencyName))
                 .Build();
         });
 
@@ -44,12 +45,12 @@ public class AddCurrencyRateTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void ExchangeRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal price)
+    public void ExchangeRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal amount)
     {
         var exception = Assert.Throws<PriceIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithPrice(price)
+                .WithMoney(new Money(amount , CurrencyConsts.SOME_CURRENCY))
                 .Build();
         });
 

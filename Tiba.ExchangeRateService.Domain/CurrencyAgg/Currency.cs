@@ -6,17 +6,16 @@ public class Currency
 {
     public Currency(ICurrencyRateOptions options)
     {
-        if (string.IsNullOrWhiteSpace(options.Currency))
+        if (string.IsNullOrWhiteSpace(options.Money.Currency))
             throw new CurrencyIsNotDefinedException();
 
         GuardAgainstOverlappingTheTimePeriod(options.FromDate, options.ToDate);
 
-        this.Name = options.Currency;
+        this.Name = options.Money.Currency;
         var currencyRateOptions = new CurrencyRateOptionsBuilder()
             .WithFromDate(options.FromDate)
             .WithToDate(options.ToDate)
-            .WithPrice(options.Price)
-            .WithCurrency(options.Currency).Build();
+            .WithMoney(options.Money).Build();
         this._currencyRates.Add(currencyRateOptions);
     }
 
@@ -34,12 +33,12 @@ public class Currency
     public void Add(DateTime fromDate, DateTime toDate, decimal price)
     {
         GuardAgainstOverlappingTheTimePeriod(fromDate, toDate);
-
+        
         var currencyRateOptions = new CurrencyRateOptionsBuilder()
             .WithFromDate(fromDate)
             .WithToDate(toDate)
-            .WithPrice(price)
-            .WithCurrency(this.Name).Build();
+            .WithMoney(new Money(price, this.Name))
+            .Build();
         this._currencyRates.Add(currencyRateOptions);
     }
 }

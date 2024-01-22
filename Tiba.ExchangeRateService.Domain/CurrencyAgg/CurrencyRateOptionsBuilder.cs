@@ -2,17 +2,18 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public sealed class CurrencyRateOptionsBuilder : ICurrencyRateOptions
 {
-    public string Currency { get; private set; }
+    // public string Currency { get; private set; }
+    // public decimal Price { get; private set; }
     public DateTime FromDate { get; private set; }
     public DateTime ToDate { get; private set; }
-    public decimal Price { get; private set; }
+    public IMoneyOption Money { get; private set; } 
 
+    // public CurrencyRateOptionsBuilder WithCurrency(string currency)
+    // {
+    //     this.Currency = currency;
+    //     return this;
+    // }
 
-    public CurrencyRateOptionsBuilder WithCurrency(string currency)
-    {
-        this.Currency = currency;
-        return this;
-    }
     public CurrencyRateOptionsBuilder WithFromDate(DateTime fromDate)
     {
         this.FromDate = fromDate;
@@ -25,14 +26,20 @@ public sealed class CurrencyRateOptionsBuilder : ICurrencyRateOptions
         return this;
     }
 
-    public CurrencyRateOptionsBuilder WithPrice(decimal price)
+    // public CurrencyRateOptionsBuilder WithPrice(decimal price)
+    // {
+    //     this.Price = price;
+    //     return this;
+    // }
+
+    public CurrencyRateOptionsBuilder WithMoney(IMoneyOption money)
     {
-        this.Price = price;
+        this.Money = money;
         return this;
     }
 
-    public  ICurrencyRateOptions Build()
+    public ICurrencyRateOptions Build()
     {
-        return new CurrencyRate(Currency, FromDate, ToDate, Price);
+        return new CurrencyRate(this.Money, FromDate, ToDate);
     }
 }
