@@ -20,7 +20,7 @@ public class TimePeriod : ITimePeriodOptions, IEquatable<TimePeriod>
         ToDate = toDate;
     }
 
-    public bool IsOverlapped(ITimePeriodOptions other)
+    public bool HasOverlapWith(ITimePeriodOptions other)
     {
         return this.FromDate <= other.ToDate && other.FromDate <= this.ToDate;
     }
