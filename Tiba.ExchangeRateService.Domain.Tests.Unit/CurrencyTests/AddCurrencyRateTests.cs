@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
+using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
@@ -19,7 +20,7 @@ public class AddCurrencyRateTests
     public void Constructor_Should_Initial_ExchangeRate_Correctly(int someDays)
     {
         var actual = _builder
-            .WithToDate(_builder.FromDate.AddDays(someDays))
+            .WithTimePeriod(TimePeriod.New(DayConsts.TODAY , DayConsts.TODAY.AddDays( someDays)))
             .Build();
 
         _builder.Assert(actual);
@@ -64,8 +65,7 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<FromDateIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithFromDate(DayConsts.TODAY.AddDays(DayConsts.TENTH_DAY))
-                .WithToDate(DayConsts.TODAY.AddDays(DayConsts.FIRST_DAY))
+                .WithTimePeriod(TimePeriod.New( DayConsts.TODAY.AddDays(DayConsts.TENTH_DAY) , DayConsts.TODAY.AddDays(DayConsts.FIRST_DAY)))
                 .Build();
         });
 
@@ -78,7 +78,7 @@ public class AddCurrencyRateTests
         var actual = Assert.Throws<FromDateIsEmptyException>(() =>
         {
             var currencyRate = _builder
-                .WithFromDate(DayConsts.NULL_OR_Default_DATE)
+                .WithTimePeriod(TimePeriod.New( DayConsts.NULL_OR_Default_DATE , DayConsts.TODAY))
                 .Build();
         });
 
@@ -92,7 +92,7 @@ public class AddCurrencyRateTests
         var actual = Assert.Throws<ToDateIsEmptyException>(() =>
         {
             var currencyRate = _builder
-                .WithToDate(DayConsts.NULL_OR_Default_DATE)
+                .WithTimePeriod(TimePeriod.New(DayConsts.TODAY , DayConsts.NULL_OR_Default_DATE))
                 .Build();
         });
 

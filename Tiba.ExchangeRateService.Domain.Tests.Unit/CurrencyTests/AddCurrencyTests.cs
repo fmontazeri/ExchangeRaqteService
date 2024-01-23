@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
+using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
@@ -29,15 +30,12 @@ public class AddCurrencyTests
         return new Currency(options);
     }
 
-    [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public void Constructor_Should_Not_Initial_Currency_When_Currency_Is_Not_Defined(string currencyName)
+    [Fact]
+    public void Constructor_Should_Not_Initial_Currency_When_Currency_Is_Not_Defined()
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
-            var options = _builder.WithMoney(CurrencyAgg.Money.New(CurrencyConsts.SOME_PRICE, currencyName)).Build();
+            var options = _builder.WithMoney(null).BuildOptions();
             var actual = NewCurrency(options);
         });
 
@@ -62,15 +60,13 @@ public class AddCurrencyTests
         (int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var options = _builder
-            .WithFromDate(DayConsts.TODAY.AddDays(fromDate1))
-            .WithToDate(DayConsts.TODAY.AddDays(toDate1)).BuildOptions();
+            .WithTimePeriod(TimePeriod.New(DayConsts.TODAY.AddDays(fromDate1), DayConsts.TODAY.AddDays(toDate1)))
+            .BuildOptions();
         var actual = NewCurrency(options);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            actual.Add(
-                CurrencyAgg.TimePeriod.New(DayConsts.TODAY.AddDays(fromDate2),
-                    DayConsts.TODAY.AddDays(toDate2)),
+            actual.Add(TimePeriod.New(DayConsts.TODAY.AddDays(fromDate2), DayConsts.TODAY.AddDays(toDate2)),
                 CurrencyConsts.SOME_PRICE);
         });
 
@@ -85,17 +81,15 @@ public class AddCurrencyTests
         DayConsts.SECOND_DAY)]
     [InlineData(DayConsts.FIRST_DAY, DayConsts.FIRST_DAY, DayConsts.SECOND_DAY,
         DayConsts.SECOND_DAY)]
-    public void
-        Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_The_Last_Time_Period(
+    public void Constructor_Should_Create_Currency_When_The_New_Time_Period_Doesnt_Has_Overlap_With_Others(
             int fromDate1, int toDate1, int fromDate2, int toDate2)
     {
         var currencyRate1 = _builder
-            .WithFromDate(DateTime.Today.AddDays(fromDate1))
-            .WithToDate(DateTime.Today.AddDays(toDate1)).BuildOptions();
+            .WithTimePeriod(TimePeriod.New(DateTime.Today.AddDays(fromDate1), DateTime.Today.AddDays(toDate1)))
+            .BuildOptions();
         var actual = NewCurrency(currencyRate1);
 
-        actual.Add(CurrencyAgg.TimePeriod.New(DateTime.Today.AddDays(fromDate2), DateTime.Today.AddDays(toDate2)),
-            CurrencyConsts.SOME_PRICE);
+        actual.Add(TimePeriod.New(DateTime.Today.AddDays(fromDate2), DateTime.Today.AddDays(toDate2)), CurrencyConsts.SOME_PRICE);
 
         var expectedCurrencyRate2 = _builder
             .WithTimePeriod(TimePeriod.New(DateTime.Today.AddDays(fromDate2), DateTime.Today.AddDays(toDate2)))

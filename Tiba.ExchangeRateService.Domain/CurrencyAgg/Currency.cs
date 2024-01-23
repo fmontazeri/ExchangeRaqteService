@@ -6,20 +6,24 @@ public class Currency
 {
     public Currency(ICurrencyRateOptions options)
     {
-        if (string.IsNullOrWhiteSpace(options.Money.Currency))
+        if (options.Money is null)
             throw new CurrencyIsNotDefinedException();
 
-        GuardAgainstOverlappingTheTimePeriod(options.TimePeriod);
+        GuardAgainstInvalidTimePeriod(options.TimePeriod);
 
         this.Name = options.Money.Currency;
-        var currencyRateOptions = new CurrencyRateOptionsBuilder()
+        var currencyRateOptions = new CurrencyRateBuilder()
             .WithTimePeriod(options.TimePeriod)
-            .WithMoney(options.Money).Build();
+            .WithMoney(options.Money)
+            .Build();
         this._currencyRates.Add(currencyRateOptions);
     }
 
-    private void GuardAgainstOverlappingTheTimePeriod(ITimePeriodOptions timePeriod)
+    private void GuardAgainstInvalidTimePeriod(ITimePeriodOptions timePeriod)
     {
+        if (timePeriod is null)
+            throw new TimePeriodIsNotDefinedException();
+
         if (this._currencyRates.Any(currencyRate =>
                 timePeriod.FromDate <= currencyRate.TimePeriod.ToDate &&
                 currencyRate.TimePeriod.FromDate <= timePeriod.ToDate))
@@ -31,11 +35,11 @@ public class Currency
     private List<ICurrencyRateOptions> _currencyRates = new();
     public IReadOnlyCollection<ICurrencyRateOptions> CurrencyRates => _currencyRates;
 
-    public void Add(ITimePeriodOptions timePeriod , decimal price)
+    public void Add(ITimePeriodOptions timePeriod, decimal price)
     {
-        GuardAgainstOverlappingTheTimePeriod(timePeriod);
+        GuardAgainstInvalidTimePeriod(timePeriod);
 
-        var currencyRateOptions = new CurrencyRateOptionsBuilder()
+        var currencyRateOptions = new CurrencyRateBuilder()
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Name))
             .Build();
