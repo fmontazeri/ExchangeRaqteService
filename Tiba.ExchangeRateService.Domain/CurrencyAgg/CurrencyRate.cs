@@ -6,8 +6,8 @@ public class CurrencyRate : ICurrencyRateOptions
 {
     internal CurrencyRate(IMoneyOptions money, ITimePeriodOptions timePeriod)
     {
-        this.Money = money;
-        this.TimePeriod = timePeriod;
+        this.Money = money ?? throw new CurrencyIsNotDefinedException();
+        this.TimePeriod = timePeriod ?? throw new TimePeriodIsNotDefinedException();
     }
 
     public IMoneyOptions Money { get; private set; }

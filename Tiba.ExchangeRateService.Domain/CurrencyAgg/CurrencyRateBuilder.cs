@@ -7,7 +7,7 @@ public sealed class CurrencyRateBuilder : ICurrencyRateOptions
 
     public CurrencyRateBuilder WithTimePeriod(ITimePeriodOptions timePeriod)
     {
-        this.TimePeriod = CurrencyAgg.TimePeriod.New(timePeriod.FromDate, timePeriod.ToDate);
+        this.TimePeriod = timePeriod;
         return this;
     }
     public CurrencyRateBuilder WithMoney(IMoneyOptions money)

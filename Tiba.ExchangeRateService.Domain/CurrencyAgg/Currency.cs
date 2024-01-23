@@ -8,7 +8,6 @@ public class Currency
     {
         if (options.Money is null)
             throw new CurrencyIsNotDefinedException();
-
         GuardAgainstInvalidTimePeriod(options.TimePeriod);
 
         this.Name = options.Money.Currency;
