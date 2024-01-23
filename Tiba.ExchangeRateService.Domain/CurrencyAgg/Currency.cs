@@ -2,7 +2,7 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
-public class Currency
+public class Currency : ICurrencyOptions
 {
     public Currency(ICurrencyRateOptions options)
     {
@@ -10,12 +10,22 @@ public class Currency
             throw new CurrencyIsNotDefinedException();
         GuardAgainstInvalidTimePeriod(options.TimePeriod);
 
-        this.Name = options.Money.Currency;
+        this.Symbol = options.Money.Currency;
         var currencyRateOptions = new CurrencyRateBuilder()
             .WithTimePeriod(options.TimePeriod)
             .WithMoney(options.Money)
             .Build();
         this._currencyRates.Add(currencyRateOptions);
+    }
+
+    public Currency(string currency , List<ICurrencyRateOptions> currencyRates)//(ICurrencyOptions options)
+    {
+        this.Symbol = currency;
+        GuardAgainstOverlappingTimePeriods(currencyRates.ToArray());
+        foreach (var currencyRate in currencyRates)
+        {
+            this._currencyRates.Add(currencyRate);
+        }
     }
 
     private void GuardAgainstInvalidTimePeriod(ITimePeriodOptions timePeriod)
@@ -29,10 +39,25 @@ public class Currency
             throw new OverlapTimePeriodException();
     }
 
-    public string Name { get; private set; }
+    private void GuardAgainstOverlappingTimePeriods(params ICurrencyRateOptions[] options)
+    {
+        if (options.Length == 1) return;
+        var index = 0;
+        bool result;
+        ICurrencyRateOptions currencyRate = options[index];
+        while (!(result = options[++index].TimePeriod.DoesTheTimePeriodOverlapWith(currencyRate.TimePeriod)))
+        {
+            Console.WriteLine(index);
+            currencyRate = options[index];
+        }
+
+        if (result) throw new OverlapTimePeriodException();
+    }
+
+    public string Symbol { get; private set; }
 
     private List<ICurrencyRateOptions> _currencyRates = new();
-    public IReadOnlyCollection<ICurrencyRateOptions> CurrencyRates => _currencyRates;
+    public List<ICurrencyRateOptions> CurrencyRates => _currencyRates;
 
     public void Add(ITimePeriodOptions timePeriod, decimal price)
     {
@@ -40,7 +65,7 @@ public class Currency
 
         var currencyRateOptions = new CurrencyRateBuilder()
             .WithTimePeriod(timePeriod)
-            .WithMoney(Money.New(price, this.Name))
+            .WithMoney(Money.New(price, this.Symbol))
             .Build();
         this._currencyRates.Add(currencyRateOptions);
     }

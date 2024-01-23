@@ -4,23 +4,25 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public interface ITimePeriodOptions
 {
-    public DateTime FromDate { get; }
-    public DateTime ToDate { get; }
+    public DateTime? FromDate { get; }
+    public DateTime? ToDate { get; }
+
+    bool DoesTheTimePeriodOverlapWith(ITimePeriodOptions period);
 }
 
 public class TimePeriod : ITimePeriodOptions, IEquatable<TimePeriod>
 {
-    public DateTime FromDate { get; private set; }
-    public DateTime ToDate { get; private set; }
+    public DateTime? FromDate { get; private set; }
+    public DateTime? ToDate { get; private set; }
 
-    private TimePeriod(DateTime fromDate, DateTime toDate)
+    public TimePeriod(DateTime fromDate, DateTime toDate)
     {
         GuardAgainstInvalidTimePeriod(fromDate, toDate);
         FromDate = fromDate;
         ToDate = toDate;
     }
 
-    public bool HasOverlapWith(ITimePeriodOptions other)
+    public bool DoesTheTimePeriodOverlapWith(ITimePeriodOptions other)
     {
         return this.FromDate <= other.ToDate && other.FromDate <= this.ToDate;
     }

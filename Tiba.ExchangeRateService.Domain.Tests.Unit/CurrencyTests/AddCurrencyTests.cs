@@ -21,7 +21,7 @@ public class AddCurrencyTests
 
         var actual = NewCurrency(options);
 
-        actual.Name.Should().BeEquivalentTo(_builder.Money.Currency);
+        actual.Symbol.Should().BeEquivalentTo(_builder.Money.Currency);
         actual.CurrencyRates.Should().HaveCount(1);
         actual.AssertCurrencyRates(options);
     }
