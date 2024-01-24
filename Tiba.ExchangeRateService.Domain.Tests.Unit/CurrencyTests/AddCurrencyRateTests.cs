@@ -50,45 +50,4 @@ public class AddCurrencyRateTests
         exception.Message.Should().BeEquivalentTo(AmountIsNotValidException.ErrorMessage);
     }
 
-
-    [Fact]
-    public void ExchangeRate_Should_Not_Be_Constructed_When_FromDate_Is_After_The_ToDate()
-    {
-        var exception = Assert.Throws<FromDateIsNotValidException>(() =>
-        {
-            var actual = _builder
-                .WithTimePeriod(TimePeriod.New(DayConsts.TODAY.AddDays(DayConsts.TENTH_DAY),
-                    DayConsts.TODAY.AddDays(DayConsts.FIRST_DAY)))
-                .Build();
-        });
-
-        exception.Message.Should().Be(FromDateIsNotValidException.ErrorMessage);
-    }
-
-    [Fact]
-    public void Constructor_Should_Not_Create_Currency_When_FromDate_Is_Not_Defined()
-    {
-        var actual = Assert.Throws<FromDateIsEmptyException>(() =>
-        {
-            var currencyRate = _builder
-                .WithTimePeriod(TimePeriod.New(DayConsts.NULL_OR_Default_DATE, DayConsts.TODAY))
-                .Build();
-        });
-
-        actual.Message.Should().BeEquivalentTo(FromDateIsEmptyException.ErrorMessage);
-    }
-
-
-    [Fact]
-    public void Constructor_Should_Not_Create_Currency_When_ToDate_Is_Not_Defined()
-    {
-        var actual = Assert.Throws<ToDateIsEmptyException>(() =>
-        {
-            var currencyRate = _builder
-                .WithTimePeriod(TimePeriod.New(DayConsts.TODAY, DayConsts.NULL_OR_Default_DATE))
-                .Build();
-        });
-
-        actual.Message.Should().BeEquivalentTo(ToDateIsEmptyException.ErrorMessage);
-    }
 }

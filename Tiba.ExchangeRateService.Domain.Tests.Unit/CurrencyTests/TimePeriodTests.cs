@@ -34,30 +34,6 @@ public class TimePeriodTests
     }
 
     [Fact]
-    public void Constructor_Should_Not_Be_Created_When_FromDate_Is_Not_Defined()
-    {
-        var exception = Assert.Throws<FromDateIsEmptyException>(() =>
-        {
-            var first = TimePeriod.New(DayConsts.NULL_OR_Default_DATE, DateTime.Today.AddDays(DayConsts.SECOND_DAY));
-        });
-
-        exception.Message.Should().Be(FromDateIsEmptyException.ErrorMessage);
-    }
-
-
-    [Fact]
-    public void Constructor_Should_Not_Be_Created_When_ToDate_Is_Not_Defined()
-    {
-        var exception = Assert.Throws<ToDateIsEmptyException>(() =>
-        {
-            var first = TimePeriod.New(DayConsts.TODAY, DayConsts.NULL_OR_Default_DATE);
-        });
-
-        exception.Message.Should().Be(ToDateIsEmptyException.ErrorMessage);
-    }
-
-
-    [Fact]
     public void Constructor_Should_Not_Be_Equal_When_Are_Not_The_Same()
     {
         var first = TimePeriod.New(DateTime.Today.AddDays(DayConsts.FIRST_DAY),

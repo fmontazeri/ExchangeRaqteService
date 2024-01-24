@@ -31,7 +31,7 @@ public class TestCurrencyBuilder : ICurrencyOptions
         return this;
     }
 
-    public ICurrencyOptions Build()
+    public Currency Build()
     {
         return new Currency(this.Symbol, this.CurrencyRates);
     }

@@ -6,8 +6,3 @@ public interface ICurrencyRateOptions
     public ITimePeriodOptions TimePeriod { get; }
 }
 
-public interface ICurrencyRateOptions1
-{
-    public decimal Amount { get; set; }
-    public ITimePeriodOptions TimePeriod { get; }
-}

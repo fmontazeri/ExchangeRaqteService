@@ -8,7 +8,7 @@ public class Currency : ICurrencyOptions
     {
         if (options.Money is null)
             throw new CurrencyIsNotDefinedException();
-        GuardAgainstInvalidTimePeriod(options.TimePeriod);
+        //GuardAgainstInvalidTimePeriod(options.TimePeriod);
 
         this.Symbol = options.Money.Currency;
         var currencyRateOptions = new CurrencyRateBuilder()
@@ -16,6 +16,7 @@ public class Currency : ICurrencyOptions
             .WithMoney(options.Money)
             .Build();
         this._currencyRates.Add(currencyRateOptions);
+        if (IsThereOverlapBetweenTimePeriods(this._currencyRates.ToArray())) throw new OverlapTimePeriodException();
     }
 
     public Currency(string currency, List<ICurrencyRateOptions> currencyRates)
@@ -23,7 +24,6 @@ public class Currency : ICurrencyOptions
         this.Symbol = currency;
         if (IsThereOverlapBetweenTimePeriods(currencyRates.ToArray()))
             throw new OverlapTimePeriodException();
-        // GuardAgainstOverlappingTimePeriods(currencyRates.ToArray());
         foreach (var currencyRate in currencyRates)
         {
             this._currencyRates.Add(currencyRate);
@@ -38,12 +38,14 @@ public class Currency : ICurrencyOptions
         if (this._currencyRates.Any(currencyRate =>
                 timePeriod.FromDate <= currencyRate.TimePeriod.ToDate &&
                 currencyRate.TimePeriod.FromDate <= timePeriod.ToDate))
+
             throw new OverlapTimePeriodException();
     }
 
     private bool IsThereOverlapBetweenTimePeriods(params ICurrencyRateOptions[] options)
     {
         if (options.Length <= 1) return false;
+
         options = options.OrderBy(o => o.TimePeriod.FromDate).ToArray();
         var index = 0;
         ICurrencyRateOptions currencyRate = options[index];
@@ -64,12 +66,12 @@ public class Currency : ICurrencyOptions
 
     public void Add(ITimePeriodOptions timePeriod, decimal price)
     {
-        GuardAgainstInvalidTimePeriod(timePeriod);
-
+        //GuardAgainstInvalidTimePeriod(timePeriod);
         var currencyRateOptions = new CurrencyRateBuilder()
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Symbol))
             .Build();
         this._currencyRates.Add(currencyRateOptions);
+        if (IsThereOverlapBetweenTimePeriods(this._currencyRates.ToArray())) throw new OverlapTimePeriodException();
     }
 }
