@@ -25,7 +25,8 @@ public class TestCurrencyBuilder : ICurrencyOptions
 
     public TestCurrencyBuilder WithTimePeriod(ITimePeriodOptions timePeriod)
     {
-        var currencyRate = _builder.WithTimePeriod(timePeriod);
+        var currencyRate = _builder.WithTimePeriod(timePeriod)
+            .WithMoney(Money.New(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY)).Build();
         this.CurrencyRates.Add(currencyRate);
         return this;
     }

@@ -18,10 +18,12 @@ public class Currency : ICurrencyOptions
         this._currencyRates.Add(currencyRateOptions);
     }
 
-    public Currency(string currency , List<ICurrencyRateOptions> currencyRates)//(ICurrencyOptions options)
+    public Currency(string currency, List<ICurrencyRateOptions> currencyRates)
     {
         this.Symbol = currency;
-        GuardAgainstOverlappingTimePeriods(currencyRates.ToArray());
+        if (IsThereOverlapBetweenTimePeriods(currencyRates.ToArray()))
+            throw new OverlapTimePeriodException();
+        // GuardAgainstOverlappingTimePeriods(currencyRates.ToArray());
         foreach (var currencyRate in currencyRates)
         {
             this._currencyRates.Add(currencyRate);
@@ -39,19 +41,20 @@ public class Currency : ICurrencyOptions
             throw new OverlapTimePeriodException();
     }
 
-    private void GuardAgainstOverlappingTimePeriods(params ICurrencyRateOptions[] options)
+    private bool IsThereOverlapBetweenTimePeriods(params ICurrencyRateOptions[] options)
     {
-        if (options.Length == 1) return;
+        if (options.Length <= 1) return false;
+        options = options.OrderBy(o => o.TimePeriod.FromDate).ToArray();
         var index = 0;
-        bool result;
         ICurrencyRateOptions currencyRate = options[index];
-        while (!(result = options[++index].TimePeriod.DoesTheTimePeriodOverlapWith(currencyRate.TimePeriod)))
+        while (options.Length > index)
         {
-            Console.WriteLine(index);
+            var result = options[++index].TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
+            if (result || index >= options.Length - 1) return result;
             currencyRate = options[index];
         }
 
-        if (result) throw new OverlapTimePeriodException();
+        return false;
     }
 
     public string Symbol { get; private set; }
