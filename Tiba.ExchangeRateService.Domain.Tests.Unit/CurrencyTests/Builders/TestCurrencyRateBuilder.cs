@@ -35,7 +35,7 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
         return this;
     }
 
-    public ICurrencyRateOptions Build()
+    public CurrencyRate Build()
     {
         return _builder.Build();
     }
