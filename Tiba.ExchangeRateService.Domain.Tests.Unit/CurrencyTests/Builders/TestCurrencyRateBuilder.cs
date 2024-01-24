@@ -14,8 +14,8 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
     public TestCurrencyRateBuilder()
     {
         _builder = new CurrencyRateBuilder();
-        _builder.WithMoney(CurrencyAgg.Money.New(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY));
-        _builder.WithTimePeriod(CurrencyAgg.TimePeriod.New(DayConsts.TODAY, DayConsts.TODAY.AddDays(DayConsts.SOME_DAYS)));
+        _builder.WithMoney(CurrencyAgg.Money.New(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY))
+            .WithTimePeriod(CurrencyAgg.TimePeriod.New(DayConsts.TODAY, DayConsts.TODAY.AddDays(DayConsts.SOME_DAYS)));
     }
 
     public void Assert(ICurrencyRateOptions actual)

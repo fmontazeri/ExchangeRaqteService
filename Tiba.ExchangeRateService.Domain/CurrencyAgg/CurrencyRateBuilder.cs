@@ -18,7 +18,7 @@ public sealed class CurrencyRateBuilder : ICurrencyRateOptions
     }
 
  
-    public ICurrencyRateOptions Build()
+    public CurrencyRate Build()
     {
         return new CurrencyRate(this.Money, TimePeriod);
     }

@@ -8,12 +8,12 @@ public class TestCurrencyBuilder : ICurrencyOptions
 {
     public string Symbol { get; private set; }
     public List<ICurrencyRateOptions> CurrencyRates { get; private set; }
-    private CurrencyRateBuilder _builder;
+    private TestCurrencyRateBuilder _builder;
 
 
     public TestCurrencyBuilder()
     {
-        this._builder = new CurrencyRateBuilder();
+        this._builder = new TestCurrencyRateBuilder();
         this.Symbol = CurrencyConsts.SOME_CURRENCY;
         this.CurrencyRates = new List<ICurrencyRateOptions>();
     }
@@ -26,8 +26,9 @@ public class TestCurrencyBuilder : ICurrencyOptions
 
     public TestCurrencyBuilder WithTimePeriod(ITimePeriodOptions timePeriod)
     {
-        var currencyRate = _builder.WithTimePeriod(timePeriod)
-            .WithMoney(Money.New(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY)).Build();
+        var currencyRate = _builder
+            .WithTimePeriod(timePeriod)
+            .Build();
         this.CurrencyRates.Add(currencyRate);
         return this;
     }
