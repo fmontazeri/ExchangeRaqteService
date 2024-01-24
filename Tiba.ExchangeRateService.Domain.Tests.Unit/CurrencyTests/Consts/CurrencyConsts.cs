@@ -1,4 +1,4 @@
-namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
+namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
 
 public static class CurrencyConsts
 {
