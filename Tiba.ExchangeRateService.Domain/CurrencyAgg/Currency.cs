@@ -4,21 +4,6 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public class Currency : ICurrencyOptions
 {
-    public Currency(ICurrencyRateOptions options)
-    {
-        if (options.Money is null)
-            throw new CurrencyIsNotDefinedException();
-        //GuardAgainstInvalidTimePeriod(options.TimePeriod);
-
-        this.Symbol = options.Money.Currency;
-        var currencyRateOptions = new CurrencyRateBuilder()
-            .WithTimePeriod(options.TimePeriod)
-            .WithMoney(options.Money)
-            .Build();
-        this._currencyRates.Add(currencyRateOptions);
-        if (IsThereOverlapBetweenTimePeriods(this._currencyRates.ToArray())) throw new OverlapTimePeriodException();
-    }
-
     public Currency(string currency, List<ICurrencyRateOptions> currencyRates)
     {
         this.Symbol = currency;
