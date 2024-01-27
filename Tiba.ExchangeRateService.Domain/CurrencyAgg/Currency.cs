@@ -51,7 +51,6 @@ public class Currency : ICurrencyOptions
 
     public void Add(ITimePeriodOptions timePeriod, decimal price)
     {
-        //GuardAgainstInvalidTimePeriod(timePeriod);
         var currencyRateOptions = new CurrencyRateBuilder()
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Symbol))
