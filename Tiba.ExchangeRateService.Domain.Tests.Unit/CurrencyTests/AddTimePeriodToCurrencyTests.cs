@@ -35,9 +35,9 @@ public class AddTimePeriodToCurrencyTests : BaseCurrencyTests
     }
 
     [Theory]
-    [InlineData(DayConsts.THIRD_DAY, DayConsts.EIGHTH_DAY, DayConsts.THIRD_DAY, DayConsts.EIGHTH_DAY)] //[3,8] [3,8]
+    [InlineData(DayConsts.THIRD_DAY, DayConsts.EIGHTH_DAY, DayConsts.THIRD_DAY, DayConsts.EIGHTH_DAY)]  //[3,8] [3,8]
     [InlineData(DayConsts.SECOND_DAY, DayConsts.SEVENTH_DAY, DayConsts.FORTH_DAY, DayConsts.NINTH_DAY)] //[2,7] [4,9]
-    [InlineData(DayConsts.FIRST_DAY, DayConsts.SIXTH_DAY, DayConsts.FIFTH_DAY, DayConsts.TENTH_DAY)] //[1,6] [5,10]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.SIXTH_DAY, DayConsts.FIFTH_DAY, DayConsts.TENTH_DAY)]    //[1,6] [5,10]
     public void
         Constructor_Should_Not_Construct_When_There_Is_Overlap_Between_The_Given_Close_Interval_TimePeriod_And_New_One(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
@@ -101,10 +101,10 @@ public class AddTimePeriodToCurrencyTests : BaseCurrencyTests
     }
 
     [Theory]
-    [InlineData(DayConsts.FIRST_DAY, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SEVENTH_DAY, DayConsts.NINTH_DAY)] //[1,3] [4,6] [7,9]
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SEVENTH_DAY, DayConsts.NINTH_DAY)]   //[1,3] [4,6] [7,9]
     [InlineData(DayConsts.SECOND_DAY, DayConsts.FORTH_DAY, DayConsts.FIFTH_DAY, DayConsts.SEVENTH_DAY, DayConsts.EIGHTH_DAY, DayConsts.TENTH_DAY)] //[2,4] [5,7] [8,10] 
-    [InlineData(DayConsts.THIRD_DAY, DayConsts.FIFTH_DAY, DayConsts.SIXTH_DAY, DayConsts.EIGHTH_DAY, DayConsts.FIRST_DAY, DayConsts.SECOND_DAY)] //[3,5] [6,8] [1,2]
-    [InlineData(DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SEVENTH_DAY, DayConsts.NINTH_DAY, DayConsts.FIRST_DAY, DayConsts.THIRD_DAY)] //[4,6] [7,9] [1,3] 
+    [InlineData(DayConsts.THIRD_DAY, DayConsts.FIFTH_DAY, DayConsts.SIXTH_DAY, DayConsts.EIGHTH_DAY, DayConsts.FIRST_DAY, DayConsts.SECOND_DAY)]   //[3,5] [6,8] [1,2]
+    [InlineData(DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SEVENTH_DAY, DayConsts.NINTH_DAY, DayConsts.FIRST_DAY, DayConsts.THIRD_DAY)]   //[4,6] [7,9] [1,3] 
     public void
         Constructor_Should_Construct_Currency_When_There_Is_No_Overlap_Between_New_Close_Interval_TimePeriod_And_Two_Others(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
@@ -161,14 +161,10 @@ public class AddTimePeriodToCurrencyTests : BaseCurrencyTests
 
 
     [Theory]
-    [InlineData(null, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SEVENTH_DAY,
-        null)] //(null,3] [4,6] [7,null)
-    [InlineData(DayConsts.SECOND_DAY, DayConsts.THIRD_DAY, null, DayConsts.FIRST_DAY, DayConsts.FORTH_DAY,
-        DayConsts.SEVENTH_DAY)] //[2,3] (null,1] [4,7)
-    [InlineData(DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, null, DayConsts.THIRD_DAY, DayConsts.SEVENTH_DAY,
-        null)] //[4,6] (null,3] [7,null)
-    [InlineData(DayConsts.FIRST_DAY, DayConsts.THIRD_DAY, DayConsts.SIXTH_DAY, null, DayConsts.FORTH_DAY,
-        DayConsts.FIFTH_DAY)] //[1,3] [6,null) [4,5]
+    [InlineData(null, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SEVENTH_DAY, null)]                 //(null,3] [4,6] [7,null)
+    [InlineData(DayConsts.SECOND_DAY, DayConsts.THIRD_DAY, null, DayConsts.FIRST_DAY, DayConsts.FORTH_DAY, DayConsts.SEVENTH_DAY)] //[2,3] (null,1] [4,7)
+    [InlineData(DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, null, DayConsts.THIRD_DAY, DayConsts.SEVENTH_DAY, null)]                 //[4,6] (null,3] [7,null)
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.THIRD_DAY, DayConsts.SIXTH_DAY, null, DayConsts.FORTH_DAY, DayConsts.FIFTH_DAY)]    //[1,3] [6,null) [4,5]
     public void
         Constructor_Should_Construct_Currency_When_There_Is_No_Overlap_Between_New_Open_Interval_TimePeriod_And_Two_Others(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
@@ -186,14 +182,10 @@ public class AddTimePeriodToCurrencyTests : BaseCurrencyTests
     }
 
     [Theory]
-    [InlineData(null, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SIXTH_DAY,
-        null)] //(null,3] [4,6] [6,null)
-    [InlineData(DayConsts.SECOND_DAY, DayConsts.THIRD_DAY, null, DayConsts.FIRST_DAY, DayConsts.SECOND_DAY,
-        null)] //[2,3] (null,1] [2,null)
-    [InlineData(DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, null, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY,
-        null)] //[4,6] (null,3] [4,null)
-    [InlineData(DayConsts.FIRST_DAY, DayConsts.THIRD_DAY, DayConsts.SIXTH_DAY, null, DayConsts.FORTH_DAY,
-        DayConsts.EIGHTH_DAY)] //[1,3] [6,null) [4,8]
+    [InlineData(null, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, DayConsts.SIXTH_DAY, null)]    //(null,3] [4,6] [6,null)
+    [InlineData(DayConsts.SECOND_DAY, DayConsts.THIRD_DAY, null, DayConsts.FIRST_DAY, DayConsts.SECOND_DAY, null)]  //[2,3] (null,1] [2,null)
+    [InlineData(DayConsts.FORTH_DAY, DayConsts.SIXTH_DAY, null, DayConsts.THIRD_DAY, DayConsts.FORTH_DAY, null)]    //[4,6] (null,3] [4,null)
+    [InlineData(DayConsts.FIRST_DAY, DayConsts.THIRD_DAY, DayConsts.SIXTH_DAY, null, DayConsts.FORTH_DAY, DayConsts.EIGHTH_DAY)] //[1,3] [6,null) [4,8]
     public void
         Constructor_Should_Construct_Currency_When_There_Is_Overlap_Between_New_Open_Interval_TimePeriod_And_Two_Others(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
@@ -208,10 +200,13 @@ public class AddTimePeriodToCurrencyTests : BaseCurrencyTests
         {
             currency.Add(TimePeriod.New(timePeriod.from3, timePeriod.to3), CurrencyConsts.SOME_PRICE);
         });
+        
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);
-       currency.CurrencyRates.Should().HaveCount(2);
+        currency.CurrencyRates.Should().HaveCount(2);
     }
 
+    
+    
     // [Theory]
     // [InlineData(null, DayConsts.FORTH_DAY, DayConsts.FIRST_DAY, DayConsts.FORTH_DAY)] //(null,4] [1,4]
     // [InlineData(null, DayConsts.FORTH_DAY, DayConsts.FIRST_DAY, DayConsts.THIRD_DAY)] //(null,4] [1,3]
