@@ -104,9 +104,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     [InlineData(DayConsts.THIRD_DAY, DayConsts.SIXTH_DAY, DayConsts.FORTH_DAY, DayConsts.SEVENTH_DAY)] //[3,6] [4,7]
     [InlineData(DayConsts.FORTH_DAY, DayConsts.SEVENTH_DAY, DayConsts.FIFTH_DAY, DayConsts.EIGHTH_DAY)] //[4,7] [5,8]
     public void
-        Constructor_Should_Not_Construct_When_There_Is_Overlap_Between_The_Given_Close_Interval_TimePeriod_And_New_One(
-            int? fromDate1,
-            int? toDate1, int? fromDate2, int? toDate2)
+        Constructor_Should_Construct_Currency_When_There_Is_Overlap_Between_The_Give_Close_Interval_List_of_Two_TimePeriods(
+            int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
@@ -114,11 +113,11 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         {
             var currency = _builder
                 .WithTimePeriod(TimePeriod.New(timePeriod.from1, timePeriod.to1))
+                .WithTimePeriod(TimePeriod.New(timePeriod.from2, timePeriod.to2))
                 .Build();
-
-            currency.Add(TimePeriod.New(timePeriod.from2, timePeriod.to2), CurrencyConsts.SOME_PRICE);
         });
 
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);
     }
+
 }
