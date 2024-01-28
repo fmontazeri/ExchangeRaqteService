@@ -4,7 +4,7 @@ public static class DayConsts
 {
         public const int FIRST_DAY = 1;
         public const int SECOND_DAY = 2;
-        public const int Third_DAY = 3;
+        public const int THIRD_DAY = 3;
         public const int FORTH_DAY = 4;
         public const int FIFTH_DAY = 5;
         public const int SIXTH_DAY = 6;
