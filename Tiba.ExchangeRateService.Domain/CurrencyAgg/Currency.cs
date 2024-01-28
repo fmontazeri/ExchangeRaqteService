@@ -56,7 +56,6 @@ public class Currency : ICurrencyOptions
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Symbol))
             .Build();
-        //TODO: refactor
         if (IsThereOverlapBetweenTimePeriods(currencyRateOptions)) throw new OverlapTimePeriodException();
         this._currencyRates.Add(currencyRateOptions);
     }
