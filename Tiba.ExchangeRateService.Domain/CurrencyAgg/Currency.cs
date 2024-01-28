@@ -27,8 +27,9 @@ public class Currency : ICurrencyOptions
             throw new OverlapTimePeriodException();
     }
 
-    private bool IsThereOverlapBetweenTimePeriods(params ICurrencyRateOptions[] options)
+    private bool IsThereOverlapBetweenTimePeriods(params ICurrencyRateOptions[] input)
     {
+        var options = this._currencyRates.ToArray().Concat(input).ToArray();
         if (options.Length <= 1) return false;
 
         options = options.OrderBy(o => o.TimePeriod.FromDate).ToArray();
@@ -55,7 +56,8 @@ public class Currency : ICurrencyOptions
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Symbol))
             .Build();
+        //TODO: refactor
+        if (IsThereOverlapBetweenTimePeriods(currencyRateOptions)) throw new OverlapTimePeriodException();
         this._currencyRates.Add(currencyRateOptions);
-        if (IsThereOverlapBetweenTimePeriods(this._currencyRates.ToArray())) throw new OverlapTimePeriodException();
     }
 }
