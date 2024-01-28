@@ -6,7 +6,7 @@ using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
-public class ConstructCurrencyTests
+public class ConstructCurrencyTests : BaseCurrencyTests
 {
     private readonly TestCurrencyBuilder _builder;
 
@@ -120,15 +120,5 @@ public class ConstructCurrencyTests
         });
 
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);
-    }
-
-    private (DateTime? from1, DateTime? to1, DateTime? from2, DateTime? to2) GetTimePeriod(int? fromDate1, int? toDate1,
-        int? fromDate2, int? toDate2)
-    {
-        DateTime? from1 = fromDate1.HasValue ? DayConsts.TODAY.AddDays(fromDate1.Value) : null;
-        DateTime? to1 = toDate1.HasValue ? DayConsts.TODAY.AddDays(toDate1.Value) : null;
-        DateTime? from2 = fromDate2.HasValue ? DayConsts.TODAY.AddDays(fromDate2.Value) : null;
-        DateTime? to2 = toDate2.HasValue ? DayConsts.TODAY.AddDays(toDate2.Value) : null;
-        return (from1, to1, from2, to2);
     }
 }
