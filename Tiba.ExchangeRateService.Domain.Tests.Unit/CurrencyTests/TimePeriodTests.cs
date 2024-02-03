@@ -10,18 +10,18 @@ public class TimePeriodTests
     [Fact]
     public void Constructor_Should_Create_A_TimePeriod_Successfully()
     {
-        var actual = TimePeriod.New(DateTime.Today.AddDays(DayConsts.FIRST_DAY),
-            DateTime.Today.AddDays(DayConsts.TENTH_DAY));
+        var actual = TimePeriod.New(DateTime.Today.AddDays(Days.FIRST_DAY),
+            DateTime.Today.AddDays(Days.TENTH_DAY));
 
-        actual.FromDate.Should().Be(DateTime.Today.AddDays(DayConsts.FIRST_DAY));
-        actual.ToDate.Should().Be(DateTime.Today.AddDays(DayConsts.TENTH_DAY));
+        actual.FromDate.Should().Be(DateTime.Today.AddDays(Days.FIRST_DAY));
+        actual.ToDate.Should().Be(DateTime.Today.AddDays(Days.TENTH_DAY));
     }
 
     [Fact]
     public void Constructor_Should_Be_Equal_When_Are_The_Same()
     {
-        var first = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(DayConsts.SECOND_DAY));
-        var second = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(DayConsts.SECOND_DAY));
+        var first = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(Days.SECOND_DAY));
+        var second = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(Days.SECOND_DAY));
 
         first.Equals(second).Should().BeTrue();
     }
@@ -29,7 +29,7 @@ public class TimePeriodTests
     [Fact]
     public void Constructor_Should_Not_Be_Equal_The_Other_Is_Not_Defined()
     {
-        var first = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(DayConsts.SECOND_DAY));
+        var first = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(Days.SECOND_DAY));
 
         first.Equals(null).Should().BeFalse();
     }
@@ -37,9 +37,9 @@ public class TimePeriodTests
     [Fact]
     public void Constructor_Should_Not_Be_Equal_When_Are_Not_The_Same()
     {
-        var first = TimePeriod.New(DateTime.Today.AddDays(DayConsts.FIRST_DAY),
-            DateTime.Today.AddDays(DayConsts.TENTH_DAY));
-        var second = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(DayConsts.SECOND_DAY));
+        var first = TimePeriod.New(DateTime.Today.AddDays(Days.FIRST_DAY),
+            DateTime.Today.AddDays(Days.TENTH_DAY));
+        var second = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(Days.SECOND_DAY));
 
         first.Equals(second).Should().BeFalse();
     }
@@ -49,7 +49,7 @@ public class TimePeriodTests
     {
         var exception = Assert.Throws<FromDateIsNotValidException>(() =>
         {
-            var first = TimePeriod.New(DayConsts.TODAY.AddDays(DayConsts.NINTH_DAY), DayConsts.TODAY);
+            var first = TimePeriod.New(Days.TODAY.AddDays(Days.NINTH_DAY), Days.TODAY);
         });
 
         exception.Message.Should().Be(FromDateIsNotValidException.ErrorMessage);

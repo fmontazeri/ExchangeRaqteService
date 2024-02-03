@@ -32,7 +32,7 @@ public class Currency : ICurrencyOptions
         var options = this._currencyRates.ToArray().Concat(input).ToArray();
         if (options.Length <= 1) return false;
 
-        options = options.OrderBy(o => o.TimePeriod.FromDate).ToArray();
+        options = options.OrderBy(o => o.TimePeriod.FromDate).ToArray(); //remove sort because of performance
         var index = 0;
         ICurrencyRateOptions currencyRate = options[index];
         while (options.Length > index)
@@ -40,6 +40,30 @@ public class Currency : ICurrencyOptions
             var result = options[++index].TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
             if (result || index >= options.Length - 1) return result;
             currencyRate = options[index];
+        }
+
+        return false;
+
+        // foreach (var currencyRate in input)
+        // {
+        //     //This has a problem without sorting
+        //     var overlapped = IsThereOverlapBetweenTimePeriods(source , currencyRate);
+        //     if (overlapped) return true;
+        // }
+        // TODO: It's not necessary to add a list of currency rates in ctor - It's important to do this without sorting input
+        //
+        // return false;
+    }
+
+    private bool IsThereOverlapBetweenTimePeriods(ICurrencyRateOptions input)
+    {
+        var index = 0;
+        while (index <= this._currencyRates.Count - 1)
+        {
+            var currencyRate = this._currencyRates[index];
+            var overlapped = input.TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
+            if (overlapped) return true;
+            index++;
         }
 
         return false;
@@ -56,7 +80,8 @@ public class Currency : ICurrencyOptions
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Symbol))
             .Build();
-        if (IsThereOverlapBetweenTimePeriods(currencyRateOptions)) throw new OverlapTimePeriodException();
+        if (IsThereOverlapBetweenTimePeriods(currencyRateOptions))
+            throw new OverlapTimePeriodException();
         this._currencyRates.Add(currencyRateOptions);
     }
 }

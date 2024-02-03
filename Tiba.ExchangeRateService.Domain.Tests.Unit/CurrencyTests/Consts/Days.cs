@@ -1,7 +1,8 @@
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
 
-public static class DayConsts
+public static class Days
 {
+        public const int CURRENT = 0;
         public const int FIRST_DAY = 1;
         public const int SECOND_DAY = 2;
         public const int THIRD_DAY = 3;

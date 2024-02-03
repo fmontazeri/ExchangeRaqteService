@@ -28,7 +28,7 @@ public class TimePeriod : ITimePeriodOptions, IEquatable<TimePeriod>
         //         ||  this.FromDate < before.ToDate && before.FromDate < this.ToDate;
 
         return (!this.FromDate.HasValue || !before.ToDate.HasValue || this.FromDate <= before.ToDate) &&
-               (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate); //|| 
+               (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate); 
     }
 
     public static ITimePeriodOptions New(DateTime? fromDate, DateTime? toDate)
