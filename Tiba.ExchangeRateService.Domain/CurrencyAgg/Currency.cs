@@ -15,6 +15,14 @@ public class Currency : ICurrencyOptions
         }
     }
 
+    public Currency(string currency, ICurrencyRateOptions currencyRate)
+    {
+        this.Symbol = currency;
+        if (IsThereOverlapBetweenTimePeriods(currencyRate))
+            throw new OverlapTimePeriodException();
+        this._currencyRates.Add(currencyRate);
+    }
+
     private void GuardAgainstInvalidTimePeriod(ITimePeriodOptions timePeriod)
     {
         if (timePeriod is null)

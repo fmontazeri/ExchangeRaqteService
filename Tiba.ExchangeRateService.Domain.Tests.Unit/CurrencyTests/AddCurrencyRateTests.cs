@@ -8,11 +8,11 @@ namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
 public class AddCurrencyRateTests
 {
-    private readonly TestCurrencyRateBuilder _builder;
+    private readonly CurrencyRateTestBuilder _builder;
 
     public AddCurrencyRateTests()
     {
-        _builder = new TestCurrencyRateBuilder();
+        _builder = new CurrencyRateTestBuilder();
     }
 
     [Fact]

@@ -5,7 +5,6 @@ public sealed class CurrencyRateBuilder : ICurrencyRateOptions
     public ITimePeriodOptions TimePeriod { get; private set; }
     public IMoneyOptions Money { get; private set; }
 
- 
     public CurrencyRateBuilder WithTimePeriod(ITimePeriodOptions timePeriod)
     {
         this.TimePeriod = timePeriod;
@@ -16,8 +15,6 @@ public sealed class CurrencyRateBuilder : ICurrencyRateOptions
         this.Money = money;
         return this;
     }
-
- 
     public CurrencyRate Build()
     {
         return new CurrencyRate(this.Money, TimePeriod);

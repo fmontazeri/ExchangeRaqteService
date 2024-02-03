@@ -4,14 +4,14 @@ using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 
-public class TestCurrencyRateBuilder : ICurrencyRateOptions
+public class CurrencyRateTestBuilder : ICurrencyRateOptions
 {
     private CurrencyRateBuilder _builder;
     public IMoneyOptions Money => _builder.Money;
     public ITimePeriodOptions TimePeriod => _builder.TimePeriod;
 
 
-    public TestCurrencyRateBuilder()
+    public CurrencyRateTestBuilder()
     {
         _builder = new CurrencyRateBuilder();
         _builder.WithMoney(CurrencyAgg.Money.New(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY))
@@ -23,13 +23,13 @@ public class TestCurrencyRateBuilder : ICurrencyRateOptions
         actual.Should().BeEquivalentTo<ICurrencyRateOptions>(this);
     }
 
-    public TestCurrencyRateBuilder WithMoney(IMoneyOptions options)
+    public CurrencyRateTestBuilder WithMoney(IMoneyOptions options)
     {
         _builder.WithMoney(options);
         return this;
     }
 
-    public TestCurrencyRateBuilder WithTimePeriod(ITimePeriodOptions options)
+    public CurrencyRateTestBuilder WithTimePeriod(ITimePeriodOptions options)
     {
         _builder.WithTimePeriod(options);
         return this;

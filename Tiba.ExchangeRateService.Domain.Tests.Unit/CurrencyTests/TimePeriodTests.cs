@@ -10,8 +10,7 @@ public class TimePeriodTests
     [Fact]
     public void Constructor_Should_Create_A_TimePeriod_Successfully()
     {
-        var actual = TimePeriod.New(DateTime.Today.AddDays(Days.FIRST_DAY),
-            DateTime.Today.AddDays(Days.TENTH_DAY));
+        var actual = TimePeriod.New(DateTime.Today.AddDays(Days.FIRST_DAY), DateTime.Today.AddDays(Days.TENTH_DAY));
 
         actual.FromDate.Should().Be(DateTime.Today.AddDays(Days.FIRST_DAY));
         actual.ToDate.Should().Be(DateTime.Today.AddDays(Days.TENTH_DAY));
@@ -37,8 +36,7 @@ public class TimePeriodTests
     [Fact]
     public void Constructor_Should_Not_Be_Equal_When_Are_Not_The_Same()
     {
-        var first = TimePeriod.New(DateTime.Today.AddDays(Days.FIRST_DAY),
-            DateTime.Today.AddDays(Days.TENTH_DAY));
+        var first = TimePeriod.New(DateTime.Today.AddDays(Days.FIRST_DAY), DateTime.Today.AddDays(Days.TENTH_DAY));
         var second = TimePeriod.New(DateTime.Today, DateTime.Today.AddDays(Days.SECOND_DAY));
 
         first.Equals(second).Should().BeFalse();
