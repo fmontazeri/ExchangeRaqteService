@@ -14,7 +14,11 @@ public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
         FromDate = fromDate;
         ToDate = toDate;
     }
-
+    private void GuardAgainstInvalidTimePeriod(DateTime? fromDate, DateTime? toDate)
+    {
+        if (fromDate > toDate)
+            throw new FromDateIsNotValidException();
+    }
     public TimePeriod(ITimePeriodOptions options) : this(options.FromDate, options.ToDate)
     {
     }
@@ -25,17 +29,12 @@ public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
         return (!this.FromDate.HasValue || !before.ToDate.HasValue || this.FromDate <= before.ToDate) &&
                (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate);
     }
-
     public static ITimePeriodOptions New(DateTime? fromDate, DateTime? toDate)
     {
         return new TimePeriod(fromDate, toDate);
     }
 
-    private void GuardAgainstInvalidTimePeriod(DateTime? fromDate, DateTime? toDate)
-    {
-        if (fromDate > toDate)
-            throw new FromDateIsNotValidException();
-    }
+ 
 
     public bool Equals(TimePeriod? other)
     {
