@@ -34,9 +34,7 @@ public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
         return new TimePeriod(fromDate, toDate);
     }
 
- 
-
-    public bool Equals(TimePeriod? other)
+ public bool Equals(TimePeriod? other)
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;

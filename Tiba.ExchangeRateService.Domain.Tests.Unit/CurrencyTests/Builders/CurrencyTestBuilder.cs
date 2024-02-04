@@ -9,7 +9,6 @@ public class CurrencyTestBuilder : ICurrencyOptions
 {
     public string Symbol { get; private set; }
     public List<ICurrencyRateOptions> CurrencyRates { get; private set; } = new();
-    //TODO: use options builder
     private CurrencyRateTestBuilder _builder;
 
     public CurrencyTestBuilder()
