@@ -8,7 +8,7 @@ public class Money :IMoneyOptions, IEquatable<Money>
     public string Currency { get; private set; }
     public decimal Amount { get; private set; }
 
-    protected Money(decimal amount, string currency)
+    private Money(decimal amount, string currency)
     {
         if (amount <= 0)
             throw new AmountIsNotValidException();
@@ -18,6 +18,9 @@ public class Money :IMoneyOptions, IEquatable<Money>
         this.Amount = amount;
     }
 
+    public Money(IMoneyOptions options): this(options.Amount , options.Currency)
+    {
+    }
     public Money Add(Money other)
     {
         if (Currency != other.Currency)

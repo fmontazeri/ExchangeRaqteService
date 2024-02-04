@@ -12,7 +12,12 @@ public class Currency : ICurrencyOptions
             throw new OverlapTimePeriodException();
         foreach (var currencyRate in currencyRates)
         {
-            this._currencyRates.Add(currencyRate);
+            var item = 
+                new CurrencyRateBuilder()
+                    .WithMoney(currencyRate.Money)
+                    .WithTimePeriod(currencyRate.TimePeriod)
+                .Build();
+            this._currencyRates.Add(item);
         }
     }
 

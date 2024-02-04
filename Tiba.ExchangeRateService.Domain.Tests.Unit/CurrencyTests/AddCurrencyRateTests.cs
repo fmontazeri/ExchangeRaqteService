@@ -1,8 +1,8 @@
 using FluentAssertions;
-using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
+using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Options;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
@@ -18,7 +18,7 @@ public class AddCurrencyRateTests
     [Fact]
     public void Constructor_Should_Create_A_CurrencyRate_Correctly()
     {
-        var actual = _builder.Build();
+        var actual = _builder.BuildOptions();
 
         _builder.Assert(actual);
     }
@@ -29,7 +29,7 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
             var actual = _builder
-                .WithMoney(null)
+                .WithMoney(new MoneyOptionsTest(CurrencyConsts.SOME_PRICE,""))
                 .Build();
         });
 
@@ -44,11 +44,10 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<AmountIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithMoney(CurrencyAgg.Money.New(amount, CurrencyConsts.SOME_CURRENCY))
+                .WithMoney(new MoneyOptionsTest(amount, CurrencyConsts.SOME_CURRENCY))
                 .Build();
         });
 
         exception.Message.Should().BeEquivalentTo(AmountIsNotValidException.ErrorMessage);
     }
-
 }

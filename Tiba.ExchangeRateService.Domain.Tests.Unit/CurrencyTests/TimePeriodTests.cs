@@ -2,6 +2,7 @@ using FluentAssertions;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
+using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Options;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 

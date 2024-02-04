@@ -1,6 +1,7 @@
 using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
+using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Options;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 
@@ -22,25 +23,16 @@ public class CurrencyTestBuilder : ICurrencyOptions
         this.Symbol = symbol;
         return this;
     }
-
-    // public CurrencyTestBuilder WithTimePeriod(ITimePeriodOptions timePeriod)
+ 
+    // public CurrencyTestBuilder WithCurrencyRate(ITimePeriodOptions timePeriod)
     // {
-    //     var currencyRate = _builder
-    //         .WithTimePeriod(timePeriod)
-    //         .Build();
-    //     this.CurrencyRates.Add(currencyRate);
+    //     var currentRate = _builder.WithTimePeriod(timePeriod).BuildOptions();
+    //     this.CurrencyRates.Add(currentRate);
     //     return this;
     // }
-
-    public CurrencyTestBuilder WithCurrencyRates(params ICurrencyRateOptions[] currencyRates)
+    public CurrencyTestBuilder WithCurrencyRate(DateTime? fromDate , DateTime? toDate )
     {
-        this.CurrencyRates.AddRange(currencyRates);
-        return this;
-    }
-    
-    public CurrencyTestBuilder WithCurrencyRate(ITimePeriodOptions timePeriod)
-    {
-        var currentRate = _builder.WithTimePeriod(timePeriod).Build();
+        var currentRate = _builder.WithTimePeriod(new TimePeriodOptionsTest(fromDate,toDate)).BuildOptions();
         this.CurrencyRates.Add(currentRate);
         return this;
     }

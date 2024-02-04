@@ -15,6 +15,10 @@ public class TimePeriod : ITimePeriodOptions, IEquatable<TimePeriod>
         ToDate = toDate;
     }
 
+    public TimePeriod(ITimePeriodOptions options) : this(options.FromDate , options.ToDate)
+    {
+    }
+
     public bool DoesOverlapWith(ITimePeriodOptions before)
     {
         // return  ( this.FromDate.HasValue? this.FromDate <= before.ToDate : this.ToDate <= before.ToDate) &&  

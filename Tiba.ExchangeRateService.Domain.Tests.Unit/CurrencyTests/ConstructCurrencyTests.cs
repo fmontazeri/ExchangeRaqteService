@@ -3,19 +3,17 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
-using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.TestClasses;
+using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Options;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
 public class ConstructCurrencyTests : BaseCurrencyTests
 {
     private readonly CurrencyTestBuilder _builder;
-    private readonly CurrencyRateTestBuilder _currencyRateTestBuilder;
 
     public ConstructCurrencyTests()
     {
         _builder = new CurrencyTestBuilder();
-        _currencyRateTestBuilder = new CurrencyRateTestBuilder();
     }
 
     [Fact]
@@ -31,7 +29,7 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     public void Constructor_Should_Construct_Currency_With_One_TimePeriod_Successfully()
     {
         var currency = _builder
-            .WithCurrencyRate(new TimePeriodTest(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS)))
+            .WithCurrencyRate(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS))
             .Build();
         
         currency.Symbol.Should().Be(_builder.Symbol);
@@ -49,8 +47,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
         var currency = _builder
-            .WithCurrencyRate(new TimePeriodTest(timePeriod.from1, timePeriod.to1))
-            .WithCurrencyRate(new TimePeriodTest(timePeriod.from2, timePeriod.to2))
+            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
             .Build();
 
         currency.Symbol.Should().Be(_builder.Symbol);
@@ -71,8 +69,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
             var currency = _builder
-                .WithCurrencyRate(new TimePeriodTest(timePeriod.from1, timePeriod.to1))
-                .WithCurrencyRate(new TimePeriodTest(timePeriod.from2, timePeriod.to2))                
+                .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+                .WithCurrencyRate(timePeriod.from2, timePeriod.to2)              
                 .Build();
         });
 
@@ -80,18 +78,18 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     }
 
     [Theory]
-    [InlineData(Days.FIRST_DAY, Days.THIRD_DAY, Days.FORTH_DAY, Days.SIXTH_DAY)] //[1,3] [4,6]
+    [InlineData(Days.FIRST_DAY, Days.THIRD_DAY, Days.FORTH_DAY, Days.SIXTH_DAY)]    //[1,3] [4,6]
     [InlineData(Days.SECOND_DAY, Days.FORTH_DAY, Days.FIFTH_DAY, Days.SEVENTH_DAY)] //[2,4] [5,7]
-    [InlineData(Days.THIRD_DAY, Days.FIFTH_DAY, Days.SIXTH_DAY, Days.EIGHTH_DAY)] //[3,5] [6,8]
-    [InlineData(Days.FORTH_DAY, Days.SIXTH_DAY, Days.SEVENTH_DAY, Days.NINTH_DAY)] //[4,6] [7,9]
+    [InlineData(Days.THIRD_DAY, Days.FIFTH_DAY, Days.SIXTH_DAY, Days.EIGHTH_DAY)]   //[3,5] [6,8]
+    [InlineData(Days.FORTH_DAY, Days.SIXTH_DAY, Days.SEVENTH_DAY, Days.NINTH_DAY)]  //[4,6] [7,9]
     public void Constructor_Should_Construct_Currency_When_There_Is_No_Overlap_Between_The_Give_Close_Interval_List_of_Two_TimePeriods(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
         var currency = _builder
-            .WithCurrencyRate(new TimePeriodTest(timePeriod.from1, timePeriod.to1))
-            .WithCurrencyRate(new TimePeriodTest(timePeriod.from2, timePeriod.to2))
+            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
             .Build();
 
         currency.Symbol.Should().Be(_builder.Symbol);
@@ -99,10 +97,10 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     }
 
     [Theory]
-    [InlineData(Days.FIRST_DAY, Days.FORTH_DAY, Days.FIRST_DAY, Days.FORTH_DAY)] //[1,4] [1,4]
-    [InlineData(Days.FIRST_DAY, Days.FORTH_DAY, Days.SECOND_DAY, Days.FIFTH_DAY)] //[1,4] [2,5]
-    [InlineData(Days.SECOND_DAY, Days.FIFTH_DAY, Days.THIRD_DAY, Days.SIXTH_DAY)] //[2,5] [3,6]
-    [InlineData(Days.THIRD_DAY, Days.SIXTH_DAY, Days.FORTH_DAY, Days.SEVENTH_DAY)] //[3,6] [4,7]
+    [InlineData(Days.FIRST_DAY, Days.FORTH_DAY, Days.FIRST_DAY, Days.FORTH_DAY)]    //[1,4] [1,4]
+    [InlineData(Days.FIRST_DAY, Days.FORTH_DAY, Days.SECOND_DAY, Days.FIFTH_DAY)]   //[1,4] [2,5]
+    [InlineData(Days.SECOND_DAY, Days.FIFTH_DAY, Days.THIRD_DAY, Days.SIXTH_DAY)]   //[2,5] [3,6]
+    [InlineData(Days.THIRD_DAY, Days.SIXTH_DAY, Days.FORTH_DAY, Days.SEVENTH_DAY)]  //[3,6] [4,7]
     [InlineData(Days.FORTH_DAY, Days.SEVENTH_DAY, Days.FIFTH_DAY, Days.EIGHTH_DAY)] //[4,7] [5,8]
     public void Constructor_Should_Construct_Currency_When_There_Is_Overlap_Between_The_Give_Close_Interval_List_of_Two_TimePeriods(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
@@ -112,8 +110,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
             var currency = _builder
-                .WithCurrencyRate(new TimePeriodTest(timePeriod.from1, timePeriod.to1))
-                .WithCurrencyRate(new TimePeriodTest(timePeriod.from2, timePeriod.to2))
+                .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+                .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
                 .Build();
         });
 

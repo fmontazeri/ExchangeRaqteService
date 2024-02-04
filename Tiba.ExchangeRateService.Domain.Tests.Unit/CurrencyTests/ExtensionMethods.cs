@@ -13,4 +13,6 @@ public static class ExtensionMethods
             actual.CurrencyRates.Should().ContainEquivalentOf(expectation);
         }
     }
+
+
 }
