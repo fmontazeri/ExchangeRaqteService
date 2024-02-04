@@ -22,7 +22,7 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
             .Build();
 
         currency.Add(new TimePeriodOptionsTest(timePeriod.from2, timePeriod.to2), CurrencyConsts.SOME_PRICE);
@@ -39,7 +39,7 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
             .Build();
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
@@ -60,7 +60,7 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
             .Build();
 
         currency.Add(new TimePeriodOptionsTest(timePeriod.from2, timePeriod.to2), CurrencyConsts.SOME_PRICE);
@@ -82,7 +82,7 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
             .Build();
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
@@ -105,8 +105,8 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2, fromDate3, toDate3);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
         currency.Add(new TimePeriodOptionsTest(timePeriod.from3, timePeriod.to3), CurrencyConsts.SOME_PRICE);
@@ -142,8 +142,8 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2, fromDate3, toDate3);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
@@ -170,8 +170,8 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2, fromDate3, toDate3);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
         currency.Add(new TimePeriodOptionsTest(timePeriod.from3, timePeriod.to3), CurrencyConsts.SOME_PRICE);
@@ -197,8 +197,8 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2, fromDate3, toDate3);
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>

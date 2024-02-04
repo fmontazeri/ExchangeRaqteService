@@ -16,20 +16,23 @@ public class AddCurrencyRateTests
     }
 
     [Fact]
-    public void Constructor_Should_Create_A_CurrencyRate_Correctly()
+    public void Construct_New_Currency_Should_Be_Done_Successfully()
     {
-        var actual = _builder.BuildOptions();
+        var actual = _builder.Build();
 
         _builder.Assert(actual);
     }
 
-    [Fact]
-    public void ExchangeRate_Should_Not_Constructed_When_Money_Is_Not_Defined()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Create_CurrencyRate_Should_Not_Be_Done_When_Money_Is_Not_Defined(string currency)
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
             var actual = _builder
-                .WithMoney(new MoneyOptionsTest(CurrencyConsts.SOME_PRICE,""))
+                .WithMoney(new MoneyOptionsTest(CurrencyConsts.SOME_PRICE,currency))
                 .Build();
         });
 

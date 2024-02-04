@@ -18,19 +18,7 @@ public class CurrencyTestBuilder : ICurrencyOptions
         this.CurrencyRates = new List<ICurrencyRateOptions>(){};
     }
 
-    public CurrencyTestBuilder WithSymbol(string symbol)
-    {
-        this.Symbol = symbol;
-        return this;
-    }
- 
-    // public CurrencyTestBuilder WithCurrencyRate(ITimePeriodOptions timePeriod)
-    // {
-    //     var currentRate = _builder.WithTimePeriod(timePeriod).BuildOptions();
-    //     this.CurrencyRates.Add(currentRate);
-    //     return this;
-    // }
-    public CurrencyTestBuilder WithCurrencyRate(DateTime? fromDate , DateTime? toDate )
+    public CurrencyTestBuilder WithTimePeriod(DateTime? fromDate , DateTime? toDate )
     {
         var currentRate = _builder.WithTimePeriod(new TimePeriodOptionsTest(fromDate,toDate)).BuildOptions();
         this.CurrencyRates.Add(currentRate);

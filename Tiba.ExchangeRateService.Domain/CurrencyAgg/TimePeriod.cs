@@ -3,7 +3,7 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
 
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
-public class TimePeriod : ITimePeriodOptions, IEquatable<TimePeriod>
+public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
 {
     public DateTime? FromDate { get; private set; }
     public DateTime? ToDate { get; private set; }
@@ -15,18 +15,15 @@ public class TimePeriod : ITimePeriodOptions, IEquatable<TimePeriod>
         ToDate = toDate;
     }
 
-    public TimePeriod(ITimePeriodOptions options) : this(options.FromDate , options.ToDate)
+    public TimePeriod(ITimePeriodOptions options) : this(options.FromDate, options.ToDate)
     {
     }
 
+    //TODO: use this in order to check overlap time period
     public bool DoesOverlapWith(ITimePeriodOptions before)
     {
-        // return  ( this.FromDate.HasValue? this.FromDate <= before.ToDate : this.ToDate <= before.ToDate) &&  
-        //         (before.FromDate.HasValue? before.FromDate <= this.ToDate : before.ToDate >= this.ToDate) 
-        //         ||  this.FromDate < before.ToDate && before.FromDate < this.ToDate;
-
         return (!this.FromDate.HasValue || !before.ToDate.HasValue || this.FromDate <= before.ToDate) &&
-               (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate); 
+               (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate);
     }
 
     public static ITimePeriodOptions New(DateTime? fromDate, DateTime? toDate)

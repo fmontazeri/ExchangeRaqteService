@@ -29,7 +29,7 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     public void Constructor_Should_Construct_Currency_With_One_TimePeriod_Successfully()
     {
         var currency = _builder
-            .WithCurrencyRate(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS))
+            .WithTimePeriod(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS))
             .Build();
         
         currency.Symbol.Should().Be(_builder.Symbol);
@@ -47,8 +47,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
         currency.Symbol.Should().Be(_builder.Symbol);
@@ -69,8 +69,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
             var currency = _builder
-                .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-                .WithCurrencyRate(timePeriod.from2, timePeriod.to2)              
+                .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+                .WithTimePeriod(timePeriod.from2, timePeriod.to2)              
                 .Build();
         });
 
@@ -88,8 +88,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
         var currency = _builder
-            .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-            .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+            .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+            .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
         currency.Symbol.Should().Be(_builder.Symbol);
@@ -110,8 +110,8 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
             var currency = _builder
-                .WithCurrencyRate(timePeriod.from1, timePeriod.to1)
-                .WithCurrencyRate(timePeriod.from2, timePeriod.to2)
+                .WithTimePeriod(timePeriod.from1, timePeriod.to1)
+                .WithTimePeriod(timePeriod.from2, timePeriod.to2)
                 .Build();
         });
 

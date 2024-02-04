@@ -5,68 +5,46 @@ namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public class Currency : ICurrencyOptions
 {
+    public string Symbol { get; private set; }
+
+    private List<ICurrencyRateOptions> _currencyRates = new();
+    public List<ICurrencyRateOptions> CurrencyRates => _currencyRates;
+
+    public Currency(string currency, ICurrencyRateOptions currencyRateOptions)
+    {
+        this.Symbol = currency;
+        AddCurrencyRate(currencyRateOptions);
+    }
+
     public Currency(string currency, List<ICurrencyRateOptions> currencyRates)
     {
         this.Symbol = currency;
-        if (IsThereOverlapBetweenTimePeriods(currencyRates.ToArray()))
-            throw new OverlapTimePeriodException();
         foreach (var currencyRate in currencyRates)
         {
-            var item = 
-                new CurrencyRateBuilder()
-                    .WithMoney(currencyRate.Money)
-                    .WithTimePeriod(currencyRate.TimePeriod)
-                .Build();
-            this._currencyRates.Add(item);
+            AddCurrencyRate(currencyRate);
         }
     }
 
-    public Currency(string currency, ICurrencyRateOptions currencyRate)
+    private void AddCurrencyRate(ICurrencyRateOptions options)
     {
-        this.Symbol = currency;
-        if (IsThereOverlapBetweenTimePeriods(currencyRate))
-            throw new OverlapTimePeriodException();
+        var currencyRate = new CurrencyRateBuilder()
+            .WithMoney(options.Money)
+            .WithTimePeriod(options.TimePeriod)
+            .Build();
+        GuardAgainstOverlapTimePeriods(currencyRate);
         this._currencyRates.Add(currencyRate);
     }
 
-    private void GuardAgainstInvalidTimePeriod(ITimePeriodOptions timePeriod)
+    private void GuardAgainstOverlapTimePeriods(CurrencyRate currencyRate)
     {
-        if (timePeriod is null)
-            throw new TimePeriodIsNotDefinedException();
-
-        if (this._currencyRates.Any(currencyRate =>
-                timePeriod.FromDate <= currencyRate.TimePeriod.ToDate &&
-                currencyRate.TimePeriod.FromDate <= timePeriod.ToDate))
-
+        if (IsThereOverlapBetweenTimePeriods(currencyRate))
             throw new OverlapTimePeriodException();
     }
 
-    private bool IsThereOverlapBetweenTimePeriods(params ICurrencyRateOptions[] input)
+    private bool IsThereOverlapBetween(ITimePeriodOptions before, ITimePeriodOptions after)
     {
-        var options = this._currencyRates.ToArray().Concat(input).ToArray();
-        if (options.Length <= 1) return false;
-
-        options = options.OrderBy(o => o.TimePeriod.FromDate).ToArray(); //remove sort because of performance
-        var index = 0;
-        ICurrencyRateOptions currencyRate = options[index];
-        while (options.Length > index)
-        {
-            var result = options[++index].TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
-            if (result || index >= options.Length - 1) return result;
-            currencyRate = options[index];
-        }
-
-        return false;
-
-        // foreach (var currencyRate in input)
-        // {
-        //     //This has a problem without sorting
-        //     var overlapped = IsThereOverlapBetweenTimePeriods(source , currencyRate);
-        //     if (overlapped) return true;
-        // }
-        // TODO: It's not necessary to add a list of currency rates in ctor - It's important to do this without sorting input
-        //
-        // return false;
+        return (!after.FromDate.HasValue || !before.ToDate.HasValue || after.FromDate <= before.ToDate) &&
+               (!before.FromDate.HasValue || !after.ToDate.HasValue || before.FromDate <= after.ToDate);
     }
 
     private bool IsThereOverlapBetweenTimePeriods(ICurrencyRateOptions input)
@@ -75,26 +53,23 @@ public class Currency : ICurrencyOptions
         while (index <= this._currencyRates.Count - 1)
         {
             var currencyRate = this._currencyRates[index];
-            var overlapped = input.TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
+            //ar overlapped = input.TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
+            var overlapped = IsThereOverlapBetween(input.TimePeriod, currencyRate.TimePeriod);
             if (overlapped) return true;
             index++;
         }
+
         return false;
     }
 
-    public string Symbol { get; private set; }
-
-    private List<ICurrencyRateOptions> _currencyRates = new();
-    public List<ICurrencyRateOptions> CurrencyRates => _currencyRates;
 
     public void Add(ITimePeriodOptions timePeriod, decimal price)
     {
-        var currencyRateOptions = new CurrencyRateBuilder()
+        var currencyRate = new CurrencyRateBuilder()
             .WithTimePeriod(timePeriod)
             .WithMoney(Money.New(price, this.Symbol))
             .Build();
-        if (IsThereOverlapBetweenTimePeriods(currencyRateOptions))
-            throw new OverlapTimePeriodException();
-        this._currencyRates.Add(currencyRateOptions);
+        GuardAgainstOverlapTimePeriods(currencyRate);
+        this._currencyRates.Add(currencyRate);
     }
 }

@@ -14,8 +14,8 @@ public class CurrencyRateTestBuilder : ICurrencyRateOptions
 
     public CurrencyRateTestBuilder()
     {
-        _builder = new CurrencyRateBuilder();
-        _builder.WithMoney(new MoneyOptionsTest(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY))
+        _builder = new CurrencyRateBuilder()
+            .WithMoney(new MoneyOptionsTest(CurrencyConsts.SOME_PRICE, CurrencyConsts.SOME_CURRENCY))
             .WithTimePeriod(new TimePeriodOptionsTest(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS)));
     }
 
@@ -24,7 +24,7 @@ public class CurrencyRateTestBuilder : ICurrencyRateOptions
         actual.Should().BeEquivalentTo<ICurrencyRateOptions>(this);
     }
 
-    public CurrencyRateTestBuilder WithMoney(IMoneyOptions? options)
+    public CurrencyRateTestBuilder WithMoney(IMoneyOptions options)
     {
         _builder.WithMoney(options);
         return this;
@@ -41,7 +41,7 @@ public class CurrencyRateTestBuilder : ICurrencyRateOptions
         return new CurrencyRateOptionsTest(this.Money, this.TimePeriod);
     }
 
-    public ICurrencyRateOptions Build()
+    public CurrencyRate Build()
     {
         return _builder.Build();
     }
