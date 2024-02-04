@@ -8,7 +8,6 @@ namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 public class AddCurrencyRateTests
 {
     private readonly CurrencyRateTestBuilder _builder;
-
     public AddCurrencyRateTests()
     {
         _builder = new CurrencyRateTestBuilder();
@@ -26,7 +25,7 @@ public class AddCurrencyRateTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Create_CurrencyRate_Should_Not_Be_Done_When_Money_Is_Not_Defined(string currency)
+    public void Construct_CurrencyRate_Should_Not_Be_Done_When_Money_Is_Not_Defined(string currency)
     {
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
@@ -41,7 +40,7 @@ public class AddCurrencyRateTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void CurrencyRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal amount)
+    public void Construct_A_New_CurrencyRate_Should_Not_Be_Done_When_The_Amount_Is_Not_Valid(decimal amount)
     {
         var exception = Assert.Throws<AmountIsNotValidException>(() =>
         {
@@ -54,4 +53,15 @@ public class AddCurrencyRateTests
     }
 
 
+    [Fact]
+    public void Construct_CurrencyRate_When_TimePeriod_Set_As_Unlimited_TimePeriod()
+    {
+        var actual = _builder
+            .WithTimePeriod(null, null)
+            .Build();
+
+        actual.Should().NotBeNull();
+        actual.TimePeriod.FromDate.Should().BeNull();
+        actual.TimePeriod.ToDate.Should().BeNull();
+    }
 }

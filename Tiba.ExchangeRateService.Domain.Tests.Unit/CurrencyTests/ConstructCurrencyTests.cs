@@ -19,33 +19,34 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     [Fact]
     public void Constructor_Should_Construct_Currency_With_No_TimePeriods_Successfully()
     {
-        var currency = _builder.Build();
+        var actual = _builder.Build();
 
-        currency.Symbol.Should().Be(_builder.Symbol);
-        currency.CurrencyRates.Should().HaveCount(0);
+        actual.Symbol.Should().Be(_builder.Symbol);
+        actual.CurrencyRates.Should().HaveCount(0);
     }
+  
 
+    [Fact]
+    public void Constructor_Should_Construct_Currency_With_One_TimePeriod_Successfully()
+    {
+        var actual = _builder
+            .WithTimePeriod(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS))
+            .Build();
+        
+        actual.Symbol.Should().Be(_builder.Symbol);
+        actual.CurrencyRates.Should().HaveCount(1);
+        actual.Should().BeEquivalentTo(_builder);
+    }
     
     [Fact]
-    public void Currency_Should_Be_Added_When_TimePeriod_Set_As_Unlimited_TimePeriod()
+    public void Currency_Should_Be_Construct_When_CurrencyRate_Includes_An_Unlimited_TimePeriod()
     {
         var actual = _builder
             .WithTimePeriod(null, null)
             .Build();
 
         actual.CurrencyRates.Should().HaveCount(1);
-        actual.CurrencyRates.First().TimePeriod.FromDate.Should().BeNull();
-        actual.CurrencyRates.First().TimePeriod.ToDate.Should().BeNull();
-    }
-    [Fact]
-    public void Constructor_Should_Construct_Currency_With_One_TimePeriod_Successfully()
-    {
-        var currency = _builder
-            .WithTimePeriod(Days.TODAY, Days.TODAY.AddDays(Days.SOME_DAYS))
-            .Build();
-        
-        currency.Symbol.Should().Be(_builder.Symbol);
-        currency.CurrencyRates.Should().HaveCount(1);
+        actual.Should().BeEquivalentTo(_builder);
     }
 
     [Theory]
@@ -53,18 +54,18 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     [InlineData(Days.FORTH_DAY, Days.SIXTH_DAY, null, Days.THIRD_DAY)] //[4,6] (null,3] 
     [InlineData(Days.FIRST_DAY, Days.THIRD_DAY, Days.FORTH_DAY, null)] //[1,3] [4,null)
     [InlineData(Days.FORTH_DAY, null, Days.FIRST_DAY, Days.THIRD_DAY)] //[4,null) [1,3] 
-    public void Constructor_Should_Construct_Currency_When_There_Is_No_Overlap_Between_The_Give_Open_Interval_List_of_Two_TimePeriods(
+    public void Constructor_Should_Construct_Currency_When_There_Is_No_Overlap_Between_The_Give_Open_Interval_Two_TimePeriods(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
-        var currency = _builder
+        var actual = _builder
             .WithTimePeriod(timePeriod.from1, timePeriod.to1)
             .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
-        currency.Symbol.Should().Be(_builder.Symbol);
-        currency.CurrencyRates.Should().HaveCount(2);
+        actual.CurrencyRates.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo(_builder);
     }
 
     [Theory]
@@ -73,14 +74,14 @@ public class ConstructCurrencyTests : BaseCurrencyTests
     [InlineData(Days.FIRST_DAY, Days.THIRD_DAY, null, Days.SIXTH_DAY)] //[1,3] (null,6] 
     [InlineData(Days.FIRST_DAY, Days.THIRD_DAY, Days.THIRD_DAY, null)] //[1,3] [3,null)
     [InlineData(null, null, null, null)]
-    public void Constructor_Should_Construct_Currency_When_There_Is_Overlap_Between_The_Give_Open_Interval_List_of_Two_TimePeriods(
+    public void Constructor_Should_Construct_Currency_When_There_Is_Overlap_Between_The_Give_Open_Interval_Two_TimePeriods(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            var currency = _builder
+            var actual = _builder
                 .WithTimePeriod(timePeriod.from1, timePeriod.to1)
                 .WithTimePeriod(timePeriod.from2, timePeriod.to2)              
                 .Build();
@@ -98,14 +99,14 @@ public class ConstructCurrencyTests : BaseCurrencyTests
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
-
-        var currency = _builder
+        
+        var actual = _builder
             .WithTimePeriod(timePeriod.from1, timePeriod.to1)
             .WithTimePeriod(timePeriod.from2, timePeriod.to2)
             .Build();
 
-        currency.Symbol.Should().Be(_builder.Symbol);
-        currency.CurrencyRates.Should().HaveCount(2);
+        actual.CurrencyRates.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo(_builder);
     }
 
     [Theory]
@@ -118,10 +119,10 @@ public class ConstructCurrencyTests : BaseCurrencyTests
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         var timePeriod = GetTimePeriod(fromDate1, toDate1, fromDate2, toDate2);
-
+        
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            var currency = _builder
+            var actual = _builder
                 .WithTimePeriod(timePeriod.from1, timePeriod.to1)
                 .WithTimePeriod(timePeriod.from2, timePeriod.to2)
                 .Build();
