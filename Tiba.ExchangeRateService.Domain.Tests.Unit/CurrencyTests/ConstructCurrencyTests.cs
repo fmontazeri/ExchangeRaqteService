@@ -25,6 +25,18 @@ public class ConstructCurrencyTests : BaseCurrencyTests
         currency.CurrencyRates.Should().HaveCount(0);
     }
 
+    
+    [Fact]
+    public void Currency_Should_Be_Added_When_TimePeriod_Set_As_Unlimited_TimePeriod()
+    {
+        var actual = _builder
+            .WithTimePeriod(null, null)
+            .Build();
+
+        actual.CurrencyRates.Should().HaveCount(1);
+        actual.CurrencyRates.First().TimePeriod.FromDate.Should().BeNull();
+        actual.CurrencyRates.First().TimePeriod.ToDate.Should().BeNull();
+    }
     [Fact]
     public void Constructor_Should_Construct_Currency_With_One_TimePeriod_Successfully()
     {

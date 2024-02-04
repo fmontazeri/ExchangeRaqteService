@@ -9,6 +9,7 @@ public class CurrencyTestBuilder : ICurrencyOptions
 {
     public string Symbol { get; private set; }
     public List<ICurrencyRateOptions> CurrencyRates { get; private set; } = new();
+    //TODO: use options builder
     private CurrencyRateTestBuilder _builder;
 
     public CurrencyTestBuilder()
@@ -19,11 +20,10 @@ public class CurrencyTestBuilder : ICurrencyOptions
 
     public CurrencyTestBuilder WithTimePeriod(DateTime? fromDate, DateTime? toDate)
     {
-        var currentRate = _builder.WithTimePeriod(new TimePeriodOptionsTest(fromDate, toDate)).BuildOptions();
+        var currentRate = _builder.WithTimePeriod(fromDate, toDate).BuildOptions();
         this.CurrencyRates.Add(currentRate);
         return this;
     }
-
     public Currency Build()
     {
         return new Currency(this.Symbol, this.CurrencyRates);

@@ -2,7 +2,6 @@ using FluentAssertions;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
-using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Options;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
 
@@ -18,7 +17,7 @@ public class AddCurrencyRateTests
     [Fact]
     public void Construct_New_Currency_Should_Be_Done_Successfully()
     {
-        var actual = _builder.Build();
+        var actual = _builder.BuildOptions();
 
         _builder.Assert(actual);
     }
@@ -32,7 +31,7 @@ public class AddCurrencyRateTests
         var exception = Assert.Throws<CurrencyIsNotDefinedException>(() =>
         {
             var actual = _builder
-                .WithMoney(new MoneyOptionsTest(CurrencyConsts.SOME_PRICE,currency))
+                .WithMoney(CurrencyConsts.SOME_PRICE, currency)
                 .Build();
         });
 
@@ -42,15 +41,17 @@ public class AddCurrencyRateTests
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
-    public void ExchangeRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal amount)
+    public void CurrencyRate_Should_Not_Be_Added_When_Price_Is_Not_Valid(decimal amount)
     {
         var exception = Assert.Throws<AmountIsNotValidException>(() =>
         {
             var actual = _builder
-                .WithMoney(new MoneyOptionsTest(amount, CurrencyConsts.SOME_CURRENCY))
+                .WithMoney(amount, CurrencyConsts.SOME_CURRENCY)
                 .Build();
         });
 
         exception.Message.Should().BeEquivalentTo(AmountIsNotValidException.ErrorMessage);
     }
+
+
 }
