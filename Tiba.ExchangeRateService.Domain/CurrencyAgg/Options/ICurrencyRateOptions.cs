@@ -1,4 +1,4 @@
-namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
+namespace Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
 
 public interface ICurrencyRateOptions 
 {

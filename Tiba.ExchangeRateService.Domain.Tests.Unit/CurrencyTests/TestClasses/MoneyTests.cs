@@ -3,7 +3,7 @@ using Tiba.ExchangeRateService.Domain.CurrencyAgg;
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
 
-namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
+namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.TestClasses;
 
 public class MoneyTests
 {

@@ -1,3 +1,5 @@
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
+
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 
 public sealed class CurrencyRateBuilder : ICurrencyRateOptions

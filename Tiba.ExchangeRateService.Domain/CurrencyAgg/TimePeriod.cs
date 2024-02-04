@@ -1,4 +1,5 @@
 using Tiba.ExchangeRateService.Domain.CurrencyAgg.Exceptions;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
 
 namespace Tiba.ExchangeRateService.Domain.CurrencyAgg;
 

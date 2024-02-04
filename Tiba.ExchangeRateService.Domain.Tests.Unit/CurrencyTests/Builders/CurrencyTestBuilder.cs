@@ -1,4 +1,5 @@
 using Tiba.ExchangeRateService.Domain.CurrencyAgg;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
 using Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Consts;
 
 namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.Builders;

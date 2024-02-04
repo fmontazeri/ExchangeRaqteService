@@ -1,6 +1,6 @@
-using Tiba.ExchangeRateService.Domain.CurrencyAgg;
+using Tiba.ExchangeRateService.Domain.CurrencyAgg.Options;
 
-namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests;
+namespace Tiba.ExchangeRateService.Domain.Tests.Unit.CurrencyTests.TestClasses;
 
 public class CurrencyRateTest : ICurrencyRateOptions
 {
