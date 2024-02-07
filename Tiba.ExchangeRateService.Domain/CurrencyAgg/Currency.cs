@@ -19,9 +19,21 @@ public class Currency : ICurrencyOptions
     public Currency(string currency, List<ICurrencyRateOptions> currencyRates)
     {
         this.Symbol = currency;
-        foreach (var currencyRate in currencyRates)
+        // foreach (var currencyRate in currencyRates)
+        // {
+        //     AddCurrencyRate(currencyRate);
+        // }
+
+        if (IsThereOverlapBetweenTimePeriods(currencyRates.ToArray()))
+            throw new OverlapTimePeriodException();
+
+        foreach (var options in currencyRates)
         {
-            AddCurrencyRate(currencyRate);
+            var currencyRate = new CurrencyRateBuilder()
+                .WithMoney(options.Money)
+                .WithTimePeriod(options.TimePeriod)
+                .Build();
+            this._currencyRates.Add(currencyRate);
         }
     }
 
@@ -62,6 +74,29 @@ public class Currency : ICurrencyOptions
         return false;
     }
 
+
+    private bool IsThereOverlapBetweenTimePeriods(params ICurrencyRateOptions[] options)
+    {
+        if (options.Length <= 1) return false;
+        var index = 0;
+        ICurrencyRateOptions currencyRate = options[index];
+        var next = 0;
+        foreach (var item in options)
+        {
+            while (options.Length - index > 1)
+            {
+                //  var result = options[++index].TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
+                var result = IsThereOverlapBetween(options[++index].TimePeriod, currencyRate.TimePeriod);
+                if (result) return result;
+                if (index >= options.Length - 1) break;
+                currencyRate = options[index];
+            }
+
+            index = ++next;
+            currencyRate = item;
+        }
+        return false;
+    }
 
     public void Add(ITimePeriodOptions timePeriod, decimal price)
     {

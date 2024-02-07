@@ -17,5 +17,5 @@ public static class Days
         public const int TWELFTH_DAY = 12;
         public static readonly DateTime NULL_OR_Default_DATE = new();
         public static readonly DateTime TODAY = DateTime.Today;
-        public const int SOME_DAYS = 10;
+        public const int SOME_DAYS = 2;
 }

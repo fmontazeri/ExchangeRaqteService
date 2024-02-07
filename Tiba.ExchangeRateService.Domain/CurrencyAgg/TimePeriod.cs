@@ -16,6 +16,8 @@ public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
     }
     private void GuardAgainstInvalidTimePeriod(DateTime? fromDate, DateTime? toDate)
     {
+        fromDate ??= DateTime.MinValue;
+        toDate ??= DateTime.MaxValue;
         if (fromDate > toDate)
             throw new FromDateIsNotValidException();
     }
