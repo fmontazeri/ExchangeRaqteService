@@ -59,12 +59,15 @@ public class AddANewCurrencyRateTests
 
     [Theory]
     [InlineData(0, Days.SOME_DAYS + 1, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3)]
-    [InlineData(null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3)]
-    [InlineData(0, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3)]
-    [InlineData(0, null, Days.SOME_DAYS + 1, null)]
+    [InlineData(null, Days.SOME_DAYS + 1, Days.SOME_DAYS , Days.SOME_DAYS + 3)]
+    [InlineData(0, null, Days.SOME_DAYS , Days.SOME_DAYS + 3)]
+    [InlineData(0, Days.SOME_DAYS , null, Days.SOME_DAYS + 3)]
+    [InlineData(0, Days.SOME_DAYS +1, Days.SOME_DAYS , null)]
     [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, 0, Days.SOME_DAYS + 1)]
     [InlineData(null ,null, 0 , Days.FIRST_DAY)]
     [InlineData(null ,0, null , Days.FIRST_DAY)]
+    [InlineData(0, null, Days.SOME_DAYS + 1, null)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS -1, null)]
     public void Add_Should_Not_Add_A_New_CurrencyRate_When_There_Is_Overlap_Between_The_Given_TimePeriod_And_New_One(int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
         Constructor_Should_Add_A_New_CurrencyRate_Successfully(fromDate1, toDate1);
@@ -82,10 +85,19 @@ public class AddANewCurrencyRateTests
     [Theory]
     [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
     [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
-    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, null)]
+    [InlineData(Days.SOME_DAYS-1, Days.SOME_DAYS, null, 0, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3)]
+    [InlineData(Days.SOME_DAYS-1, Days.SOME_DAYS, Days.SOME_DAYS+1, Days.SOME_DAYS+2 , null, 0)]
+    [InlineData(Days.SOME_DAYS+3, null, Days.SOME_DAYS-1, Days.SOME_DAYS, Days.SOME_DAYS+1,  Days.SOME_DAYS+2)]
+    [InlineData(Days.SOME_DAYS-3, 0, Days.SOME_DAYS+1, null, Days.SOME_DAYS-1,  Days.SOME_DAYS)]
+    [InlineData(Days.SOME_DAYS-3, 0, Days.SOME_DAYS-1, Days.SOME_DAYS, Days.SOME_DAYS+1,  null)]
+    [InlineData(null, 0, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, null)]
+    [InlineData(0, Days.SOME_DAYS, null, -1, Days.SOME_DAYS+1, null)]
+    [InlineData(Days.SOME_DAYS+1, null, null, -1, Days.SOME_DAYS-1, Days.SOME_DAYS)]
+    [InlineData(Days.SOME_DAYS-1, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, null, 0)]
+    [InlineData(null, 0, Days.SOME_DAYS + 1, null, Days.SOME_DAYS -1, Days.SOME_DAYS)]
     public void Add_Should_Add_Third_CurrencyRate_With_No_TimePeriod_Overlap_Successfully(int? fromDate1, int? toDate1, int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
     {
-        Add_Should_Not_Add_A_New_CurrencyRate_When_There_Is_Overlap_Between_The_Given_TimePeriod_And_New_One(fromDate1, toDate1, fromDate2, toDate2);
+        Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(fromDate1, toDate1, fromDate2, toDate2);
         var timePeriod = GetTimePeriod(fromDate3, toDate3);
 
         _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate), CurrencyConsts.SOME_PRICE);
