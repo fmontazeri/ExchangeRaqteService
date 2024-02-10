@@ -131,8 +131,7 @@ public class AddANewCurrencyRateTests
 
         var exception = Assert.Throws<OverlapTimePeriodException>(() =>
         {
-            _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate),
-                CurrencyConsts.SOME_PRICE);
+            _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate), CurrencyConsts.SOME_PRICE);
         });
 
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);

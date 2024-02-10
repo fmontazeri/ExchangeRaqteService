@@ -55,18 +55,18 @@ public class Currency : ICurrencyOptions
 
     private bool IsThereOverlapBetween(ITimePeriodOptions before, ITimePeriodOptions after)
     {
-        return (!after.FromDate.HasValue || !before.ToDate.HasValue || after.FromDate <= before.ToDate) &&
-               (!before.FromDate.HasValue || !after.ToDate.HasValue || before.FromDate <= after.ToDate);
+        return (after.FromDate ?? DateTime.MinValue) <= (before.ToDate ?? DateTime.MaxValue) &&
+               (before.FromDate ?? DateTime.MinValue) <= (after.ToDate ?? DateTime.MaxValue);
     }
 
-    private bool IsThereOverlapBetweenTimePeriods(ICurrencyRateOptions input)
+    private bool IsThereOverlapBetweenTimePeriods(CurrencyRate input)
     {
         var index = 0;
         while (index <= this._currencyRates.Count - 1)
         {
             var currencyRate = this._currencyRates[index];
-            //ar overlapped = input.TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
-            var overlapped = IsThereOverlapBetween(input.TimePeriod, currencyRate.TimePeriod);
+            var overlapped = input.DoesItOverlapWith(currencyRate.TimePeriod);
+            //var overlapped = IsThereOverlapBetween(input.TimePeriod, currencyRate.TimePeriod);
             if (overlapped) return true;
             index++;
         }
@@ -85,7 +85,7 @@ public class Currency : ICurrencyOptions
         {
             while (options.Length - index > 1)
             {
-                //  var result = options[++index].TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
+                //var result = options[++index].TimePeriod.DoesOverlapWith(currencyRate.TimePeriod);
                 var result = IsThereOverlapBetween(options[++index].TimePeriod, currencyRate.TimePeriod);
                 if (result) return result;
                 if (index >= options.Length - 1) break;
@@ -95,6 +95,7 @@ public class Currency : ICurrencyOptions
             index = ++next;
             currencyRate = item;
         }
+
         return false;
     }
 

@@ -8,6 +8,6 @@ public interface ITimePeriodOptions
 
 public interface ITimePeriod : ITimePeriodOptions
 {
-    bool DoesOverlapWith(ITimePeriodOptions before);
+    bool DoesItOverlapWith(ITimePeriodOptions before);
 }
 

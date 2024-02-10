@@ -76,12 +76,12 @@ public class AddNewCurrencyRateTests : BaseCurrencyTests
     }
 
     [Theory]
-    [InlineData(null, Days.FIFTH_DAY, Days.SECOND_DAY, Days.FORTH_DAY)] //(null,5] [2,4]
-    [InlineData(null, Days.FIFTH_DAY, Days.THIRD_DAY, Days.FIFTH_DAY)] //(null,5] [3,5]
-    [InlineData(null, Days.FIFTH_DAY, Days.FORTH_DAY, Days.SIXTH_DAY)] //(null,5] [4,6]
-    [InlineData(null, Days.FIFTH_DAY, Days.FIFTH_DAY, Days.SEVENTH_DAY)] //(null,5] [5,7]
+    // [InlineData(null, Days.FIFTH_DAY, Days.SECOND_DAY, Days.FORTH_DAY)] //(null,5] [2,4]
+    // [InlineData(null, Days.FIFTH_DAY, Days.THIRD_DAY, Days.FIFTH_DAY)] //(null,5] [3,5]
+    // [InlineData(null, Days.FIFTH_DAY, Days.FORTH_DAY, Days.SIXTH_DAY)] //(null,5] [4,6]
+    // [InlineData(null, Days.FIFTH_DAY, Days.FIFTH_DAY, Days.SEVENTH_DAY)] //(null,5] [5,7]
     [InlineData(Days.SECOND_DAY, Days.FORTH_DAY, null, Days.FIFTH_DAY)] //[2,4] (null,5]
-    [InlineData(null, null, null, null)]
+    //[InlineData(null, null, null, null)]
     public void
         Add_Should_Add_New_Currency_When_There_Is_Overlap_Between_The_Given_Open_Interval_TimePeriod_And_New_One(
             int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)

@@ -11,9 +11,11 @@ public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
     private TimePeriod(DateTime? fromDate, DateTime? toDate)
     {
         GuardAgainstInvalidTimePeriod(fromDate, toDate);
+
         FromDate = fromDate;
         ToDate = toDate;
     }
+
     private void GuardAgainstInvalidTimePeriod(DateTime? fromDate, DateTime? toDate)
     {
         fromDate ??= DateTime.MinValue;
@@ -21,22 +23,28 @@ public class TimePeriod : ITimePeriod, IEquatable<TimePeriod>
         if (fromDate > toDate)
             throw new FromDateIsNotValidException();
     }
+
     public TimePeriod(ITimePeriodOptions options) : this(options.FromDate, options.ToDate)
     {
     }
 
     //TODO: use this in order to check overlap time period
-    public bool DoesOverlapWith(ITimePeriodOptions before)
+    public bool DoesItOverlapWith(ITimePeriodOptions before)
     {
-        return (!this.FromDate.HasValue || !before.ToDate.HasValue || this.FromDate <= before.ToDate) &&
-               (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate);
+        //TODO: refactor the lines below by set default value in fromDate and toDate in ctor
+        //     return (!this.FromDate.HasValue || !before.ToDate.HasValue || this.FromDate <= before.ToDate) &&
+        //            (!before.FromDate.HasValue || !this.ToDate.HasValue || before.FromDate <= this.ToDate);
+
+        return (this.FromDate?? DateTime.MinValue) <= (before.ToDate?? DateTime.MaxValue) &&
+               (before.FromDate?? DateTime.MinValue) <= (this.ToDate?? DateTime.MaxValue);
     }
-    public static ITimePeriodOptions New(DateTime? fromDate, DateTime? toDate)
+
+    public static TimePeriod New(DateTime? fromDate, DateTime? toDate)
     {
         return new TimePeriod(fromDate, toDate);
     }
 
- public bool Equals(TimePeriod? other)
+    public bool Equals(TimePeriod? other)
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;

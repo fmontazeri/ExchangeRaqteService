@@ -42,7 +42,7 @@ public class CurrencyRateTestBuilder : ICurrencyRateOptions
         return new CurrencyRateOptionsTest(this.Money, this.TimePeriod);
     }
 
-    public CurrencyRate Build()
+    public ICurrencyRate Build()
     {
         return _builder.WithMoney(this.Money).WithTimePeriod(this.TimePeriod).Build();
     }
