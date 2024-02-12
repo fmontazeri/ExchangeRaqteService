@@ -27,11 +27,14 @@ public class AddANewCurrencyRateTests
     [InlineData(Days.SOME_DAYS, Days.SOME_DAYS + 1)]
     public void Constructor_Should_Add_A_New_CurrencyRate_Successfully(int? fromDate1, int? toDate1)
     {
+        //Arrange
         var timePeriod = GetTimePeriod(fromDate1, toDate1);
         var sut = _builder.WithTimePeriod(timePeriod.fromDate, timePeriod.toDate);
 
+        //Act
         _currency = sut.Build();
 
+        //Assert
         _currency.CurrencyRates.Should().HaveCount(1);
     }
 
@@ -44,13 +47,17 @@ public class AddANewCurrencyRateTests
     [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS)]
     [InlineData(Days.SOME_DAYS + 1, null, null, Days.SOME_DAYS)]
     [InlineData(Days.SOME_DAYS + 1, null, 0, Days.SOME_DAYS)]
-    public void Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
+    public void Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(int? fromDate1, int? toDate1,
+        int? fromDate2, int? toDate2)
     {
+        //Arrange
         Constructor_Should_Add_A_New_CurrencyRate_Successfully(fromDate1, toDate1);
         var timePeriod = GetTimePeriod(fromDate2, toDate2);
 
+        //Act
         _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate), CurrencyConsts.SOME_PRICE);
 
+        //Assert
         _currency.CurrencyRates.Should().HaveCount(2);
     }
 
@@ -70,11 +77,15 @@ public class AddANewCurrencyRateTests
     public void Add_Should_Add_Third_CurrencyRate_With_No_TimePeriod_Overlap_Successfully(int? fromDate1, int? toDate1,
         int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
     {
-        Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(fromDate1, toDate1, fromDate2, toDate2);
+        //Arrange
+        Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(fromDate1, toDate1, fromDate2,
+            toDate2);
         var timePeriod = GetTimePeriod(fromDate3, toDate3);
 
+        //Act
         _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate), CurrencyConsts.SOME_PRICE);
 
+        //Assert
         _currency.CurrencyRates.Should().HaveCount(3);
     }
 
@@ -86,10 +97,13 @@ public class AddANewCurrencyRateTests
     [Fact]
     public void Constructor_Should_Not_Add_A_New_CurrencyRate_When_FromDate_Is_After_ToDate()
     {
+        //Arrange
         var sut = _builder.WithTimePeriod(DateTime.Today.AddDays(Days.SOME_DAYS), DateTime.Today);
 
+        //Act
         var exception = Assert.Throws<FromDateIsNotValidException>(() => { _currency = sut.Build(); });
 
+        //Assert
         exception.Message.Should().Be(FromDateIsNotValidException.ErrorMessage);
     }
 
@@ -126,19 +140,19 @@ public class AddANewCurrencyRateTests
     [InlineData(Days.SOME_DAYS + 1, null, null, null)]
     [InlineData(null, null, null, Days.SOME_DAYS + 2)]
     [InlineData(null, null, Days.SOME_DAYS - 1, null)]
-
     public void Add_Should_Not_Add_A_New_CurrencyRate_When_There_Is_Overlap_Between_The_Given_TimePeriod_And_New_One(
         int? fromDate1, int? toDate1, int? fromDate2, int? toDate2)
     {
+        //Arrange
         Constructor_Should_Add_A_New_CurrencyRate_Successfully(fromDate1, toDate1);
         var timePeriod = GetTimePeriod(fromDate2, toDate2);
 
-        var exception = Assert.Throws<OverlapTimePeriodException>(() =>
-        {
-            _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate),
-                CurrencyConsts.SOME_PRICE);
-        });
+        //Act
+        Action action = () => _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate),
+            CurrencyConsts.SOME_PRICE);
 
+        //Assert
+        var exception = Assert.Throws<OverlapTimePeriodException>(() => { action(); });
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);
     }
 
@@ -154,16 +168,16 @@ public class AddANewCurrencyRateTests
     public void Add_Should_Not_Add_Third_CurrencyRate_When_There_Is_TimePeriod_Overlap(int? fromDate1, int? toDate1,
         int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
     {
+        //Arrange
         Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(fromDate1, toDate1, fromDate2,
             toDate2);
         var timePeriod = GetTimePeriod(fromDate3, toDate3);
 
-        var exception = Assert.Throws<OverlapTimePeriodException>(() =>
-        {
-            _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate),
-                CurrencyConsts.SOME_PRICE);
-        });
-
+        //Act
+        Action action = () => _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate), CurrencyConsts.SOME_PRICE);
+        
+        //Assert
+        var exception = Assert.Throws<OverlapTimePeriodException>(() => { action(); });
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);
     }
 
