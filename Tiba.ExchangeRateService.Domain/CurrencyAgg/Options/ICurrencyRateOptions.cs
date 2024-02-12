@@ -9,7 +9,7 @@ public interface ICurrencyRateOptions
 public interface ICurrencyRate : ICurrencyRateOptions
 {
     bool DoesItOverlapWith(ITimePeriodOptions before);
-    
-    ITimePeriod TimePeriod { get; }
+
+    new ITimePeriod TimePeriod { get; }
 }
 
