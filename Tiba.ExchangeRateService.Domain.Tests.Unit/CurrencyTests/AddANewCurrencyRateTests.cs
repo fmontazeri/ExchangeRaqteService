@@ -41,12 +41,12 @@ public class AddANewCurrencyRateTests
     [Theory]
     [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
     [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
-    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, null)]
     [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, null)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, null)]
     [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, 0, Days.SOME_DAYS)]
+    [InlineData(Days.SOME_DAYS + 1, null, 0, Days.SOME_DAYS)]
     [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS)]
     [InlineData(Days.SOME_DAYS + 1, null, null, Days.SOME_DAYS)]
-    [InlineData(Days.SOME_DAYS + 1, null, 0, Days.SOME_DAYS)]
     public void Add_Should_Add_Second_TimePeriod_With_No_TimePeriod_Overlap_Successfully(int? fromDate1, int? toDate1,
         int? fromDate2, int? toDate2)
     {
@@ -62,18 +62,26 @@ public class AddANewCurrencyRateTests
     }
 
     [Theory]
-    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
+    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3,
+        Days.SOME_DAYS + 4)]
     [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
-    [InlineData(Days.SOME_DAYS + 3, null, Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
-    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, null, 0, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3)]
-    [InlineData(Days.SOME_DAYS - 3, 0, Days.SOME_DAYS + 1, null, Days.SOME_DAYS - 1, Days.SOME_DAYS)]
-    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, 0)]
-    [InlineData(Days.SOME_DAYS - 3, 0, Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, null)]
-    [InlineData(null, 0, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, null)]
-    [InlineData(null, 0, Days.SOME_DAYS + 1, null, Days.SOME_DAYS - 1, Days.SOME_DAYS)]
-    [InlineData(Days.SOME_DAYS + 1, null, null, -1, Days.SOME_DAYS - 1, Days.SOME_DAYS)]
-    [InlineData(0, Days.SOME_DAYS, null, -1, Days.SOME_DAYS + 1, null)]
-    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, null, 0)]
+    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, null)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3, null)]
+    [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 3,
+        Days.SOME_DAYS + 4)]
+    [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
+    [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 3, null)]
+    [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS, Days.SOME_DAYS + 3, null)]
+    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4, Days.SOME_DAYS + 1,
+        Days.SOME_DAYS + 2)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
+    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
+    [InlineData(Days.SOME_DAYS + 3, Days.SOME_DAYS + 4, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS - 1,
+        Days.SOME_DAYS)]
+    [InlineData(Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS - 1, Days.SOME_DAYS)]
+    [InlineData(Days.SOME_DAYS + 3, Days.SOME_DAYS + 4, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS)]
+    [InlineData(Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS)]
     public void Add_Should_Add_Third_CurrencyRate_With_No_TimePeriod_Overlap_Successfully(int? fromDate1, int? toDate1,
         int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
     {
@@ -123,7 +131,6 @@ public class AddANewCurrencyRateTests
     [InlineData(null, null, Days.SOME_DAYS + 1, null)]
     [InlineData(Days.SOME_DAYS - 1, null, null, null)]
     [InlineData(null, null, null, null)]
-    //---
     [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, Days.SOME_DAYS - 1, Days.SOME_DAYS + 2)]
     [InlineData(Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 2)]
     [InlineData(Days.SOME_DAYS + 1, null, Days.SOME_DAYS - 1, Days.SOME_DAYS + 2)]
@@ -135,7 +142,6 @@ public class AddANewCurrencyRateTests
     [InlineData(null, Days.SOME_DAYS + 3, Days.SOME_DAYS - 1, null)]
     [InlineData(null, null, Days.SOME_DAYS - 1, Days.SOME_DAYS + 2)]
     [InlineData(Days.SOME_DAYS + 1, null, Days.SOME_DAYS - 1, null)]
-    //--
     [InlineData(null, Days.SOME_DAYS + 3, null, null)]
     [InlineData(Days.SOME_DAYS + 1, null, null, null)]
     [InlineData(null, null, null, Days.SOME_DAYS + 2)]
@@ -158,13 +164,63 @@ public class AddANewCurrencyRateTests
 
 
     [Theory]
-    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3)]
-    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS)]
-    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS - 1, null)]
-    [InlineData(null, Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, 0, null)]
-    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, null, 0, Days.SOME_DAYS - 3, null)]
-    [InlineData(null, 0, Days.SOME_DAYS - 1, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
-    [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, null)]
+    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, Days.SOME_DAYS + 2, Days.SOME_DAYS + 4)]
+    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 4)]
+    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, null, null)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, Days.SOME_DAYS + 2, Days.SOME_DAYS + 4)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, null, Days.SOME_DAYS + 4)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 3, null, null)]
+    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
+    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, null, Days.SOME_DAYS + 4)]
+    [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, null, null)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, Days.SOME_DAYS + 3, Days.SOME_DAYS + 4)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, null, Days.SOME_DAYS + 4)]
+    [InlineData(null, Days.SOME_DAYS, Days.SOME_DAYS + 1, null, null, null)]
+    
+    [InlineData( Days.SOME_DAYS + 1, Days.SOME_DAYS + 2,0, Days.SOME_DAYS, null, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, Days.SOME_DAYS + 2,0, Days.SOME_DAYS, null, null)]
+    [InlineData( Days.SOME_DAYS + 1, null,0, Days.SOME_DAYS, Days.SOME_DAYS + 2, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, null,0, Days.SOME_DAYS, null, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, null,0, Days.SOME_DAYS, null, null)]
+    [InlineData( Days.SOME_DAYS + 1, Days.SOME_DAYS + 2,null, Days.SOME_DAYS, Days.SOME_DAYS + 2, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, Days.SOME_DAYS + 2,null, Days.SOME_DAYS, null, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, Days.SOME_DAYS + 2,null, Days.SOME_DAYS, null, null)]
+    [InlineData( Days.SOME_DAYS + 1, null,null, Days.SOME_DAYS, Days.SOME_DAYS + 2, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, null,null, Days.SOME_DAYS, null, Days.SOME_DAYS + 4)]
+    [InlineData( Days.SOME_DAYS + 1, null,null, Days.SOME_DAYS, null, null)]
+
+    [InlineData( 0,Days.SOME_DAYS, Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    [InlineData( null,Days.SOME_DAYS, Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    [InlineData( 0,Days.SOME_DAYS, Days.SOME_DAYS + 1,null ,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    [InlineData( null,Days.SOME_DAYS, Days.SOME_DAYS + 1,null ,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+
+   
+    [InlineData( Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,0,Days.SOME_DAYS,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    [InlineData( Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,0,Days.SOME_DAYS,null,  Days.SOME_DAYS+4)]
+    [InlineData( Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,0,Days.SOME_DAYS,null,  null)]
+    [InlineData( Days.SOME_DAYS + 1,null ,0,Days.SOME_DAYS,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    [InlineData( Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,null,Days.SOME_DAYS,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    [InlineData( Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,null,Days.SOME_DAYS,null,  Days.SOME_DAYS+4)]
+    [InlineData( Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,null,Days.SOME_DAYS,null,  null)]
+    [InlineData( Days.SOME_DAYS + 1,null ,null,Days.SOME_DAYS,Days.SOME_DAYS -1,  Days.SOME_DAYS+4)]
+    
+    [InlineData( 0,Days.SOME_DAYS , Days.SOME_DAYS+1 ,Days.SOME_DAYS+3,Days.SOME_DAYS+3 ,  Days.SOME_DAYS+4)]
+    [InlineData( 0,Days.SOME_DAYS, Days.SOME_DAYS + 1,Days.SOME_DAYS+3 ,Days.SOME_DAYS ,  Days.SOME_DAYS+4)]
+    [InlineData( 0,Days.SOME_DAYS , Days.SOME_DAYS+1 ,Days.SOME_DAYS+3, 0, Days.SOME_DAYS + 4)]
+    [InlineData(0,Days.SOME_DAYS , Days.SOME_DAYS+1 ,Days.SOME_DAYS+3, Days.SOME_DAYS + 1, Days.SOME_DAYS + 4)]
+    
+    [InlineData(  Days.SOME_DAYS+1,Days.SOME_DAYS+3 , 0 ,Days.SOME_DAYS,Days.SOME_DAYS+3 ,  Days.SOME_DAYS+4)]
+    [InlineData(  Days.SOME_DAYS+1,Days.SOME_DAYS+3 , 0 ,Days.SOME_DAYS,0,  Days.SOME_DAYS+4)]
+    [InlineData(  Days.SOME_DAYS+1,Days.SOME_DAYS+3 , 0 ,Days.SOME_DAYS,Days.SOME_DAYS,  Days.SOME_DAYS+4)]
+
+
+    // [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS + 2, Days.SOME_DAYS + 3)]
+    // [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, Days.SOME_DAYS)]
+    // [InlineData(0, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, Days.SOME_DAYS - 1, null)]
+    // [InlineData(null, Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, 0, null)]
+    // [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, null, 0, Days.SOME_DAYS - 3, null)]
+    // [InlineData(null, 0, Days.SOME_DAYS - 1, null, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2)]
+    // [InlineData(Days.SOME_DAYS - 1, Days.SOME_DAYS, Days.SOME_DAYS + 1, Days.SOME_DAYS + 2, null, null)]
     public void Add_Should_Not_Add_Third_CurrencyRate_When_There_Is_TimePeriod_Overlap(int? fromDate1, int? toDate1,
         int? fromDate2, int? toDate2, int? fromDate3, int? toDate3)
     {
@@ -174,8 +230,9 @@ public class AddANewCurrencyRateTests
         var timePeriod = GetTimePeriod(fromDate3, toDate3);
 
         //Act
-        Action action = () => _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate), CurrencyConsts.SOME_PRICE);
-        
+        Action action = () => _currency.Add(new TimePeriodOptionsTest(timePeriod.fromDate, timePeriod.toDate),
+            CurrencyConsts.SOME_PRICE);
+
         //Assert
         var exception = Assert.Throws<OverlapTimePeriodException>(() => { action(); });
         exception.Message.Should().Be(OverlapTimePeriodException.ErrorMessage);
